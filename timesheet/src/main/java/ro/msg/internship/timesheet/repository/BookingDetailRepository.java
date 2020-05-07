@@ -8,5 +8,6 @@ import ro.msg.internship.timesheet.model.BookingDetail;
 import java.util.List;
 
 public interface BookingDetailRepository extends JpaRepository<BookingDetail, Integer> {
+
     List<BookingDetail> findAllByBooking(Booking booking);
 }

@@ -1,17 +1,19 @@
 package ro.msg.internship.timesheet.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 @Builder
 public class UserDto {
 
+    private Integer id;
+    private String username;
+    private String password;
     private String firstName;
-
     private String lastName;
+    private String programName;
 
-    private String programeName;
 }

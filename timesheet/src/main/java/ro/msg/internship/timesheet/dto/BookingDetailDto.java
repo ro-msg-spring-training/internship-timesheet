@@ -18,4 +18,5 @@ public class BookingDetailDto {
     private String status;
     private Float hours;
     private String pspName;
+
 }
