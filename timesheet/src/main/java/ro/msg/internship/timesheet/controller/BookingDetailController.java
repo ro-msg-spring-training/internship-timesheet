@@ -45,7 +45,7 @@ public class BookingDetailController {
 
     @DeleteMapping(value = "/bookingDetail/{id}", produces = "application/json")
     @Transactional
-    public ResponseEntity<BookingDetailDto> deleteProduct(@PathVariable("id") final Integer id) {
+    public ResponseEntity<BookingDetailDto> deleteBookingDetail(@PathVariable("id") final Integer id) {
 
         BookingDetail bookingDetail = bookingDetailService.deleteBookingDetail(id);
 
@@ -56,7 +56,7 @@ public class BookingDetailController {
     }
 
     @GetMapping(value = "/bookingDetail", produces = "application/json")
-    public ResponseEntity<List<BookingDetailDto>> createBookingDetail(){
+    public ResponseEntity<List<BookingDetailDto>> getBookingDetail(){
 
         List<BookingDetailDto> bookingDetailDtosConverted = new ArrayList<>();
 
@@ -64,8 +64,7 @@ public class BookingDetailController {
                 .getAllBookingDetail(bookingService.getBookingById(1)).keySet();
 
         for (BookingDetail bookingDetail : bookingDetails){
-            BookingDetailDto bookingDetailDto = new BookingDetailDto();
-            bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail, 0.0);
+            BookingDetailDto bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail, 0.0);
             bookingDetailDto.setBookingId(bookingDetail.getBooking().getBookingId());
             bookingDetailDto.setPspName(bookingDetail.getPsp().getName());
 

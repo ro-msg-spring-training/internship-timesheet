@@ -7,5 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
+	
     List<Booking> findBookingByDay(LocalDate day);
+    
+    List<Booking> findBookingByUserId(Integer userId);
 }
