@@ -1,10 +1,11 @@
-package ro.msg.internship.service;
+package ro.msg.internship.timesheet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.internship.model.Booking;
-import ro.msg.internship.model.BookingDetail;
-import ro.msg.internship.repository.BookingDetailRepository;
+import ro.msg.internship.timesheet.model.Booking;
+import ro.msg.internship.timesheet.model.BookingDetail;
+import ro.msg.internship.timesheet.repository.BookingDetailRepository;
+
 import static java.time.temporal.ChronoUnit.*;
 
 import java.util.HashMap;

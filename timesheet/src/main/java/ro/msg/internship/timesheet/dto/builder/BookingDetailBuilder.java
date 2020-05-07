@@ -1,7 +1,7 @@
-package ro.msg.internship.dto.builder;
+package ro.msg.internship.timesheet.dto.builder;
 
-import ro.msg.internship.dto.BookingDetailDto;
-import ro.msg.internship.model.BookingDetail;
+import ro.msg.internship.timesheet.dto.BookingDetailDto;
+import ro.msg.internship.timesheet.model.BookingDetail;
 
 public class BookingDetailBuilder {
     public static BookingDetailDto getDtoFromEntity(BookingDetail bookingDetail, Float hour) {

@@ -1,7 +1,6 @@
-package ro.msg.internship.dto;
+package ro.msg.internship.timesheet.dto;
 
 import lombok.*;
-import ro.msg.internship.model.BookingDetail;
 
 import java.time.LocalTime;
 

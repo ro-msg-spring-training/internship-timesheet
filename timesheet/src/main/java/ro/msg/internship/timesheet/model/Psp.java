@@ -1,7 +1,4 @@
-package ro.msg.internship.model;
-
-import java.time.LocalDate;
-import java.util.Set;
+package ro.msg.internship.timesheet.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -20,30 +16,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Booking")
-@Table(name = "booking", schema = "timesheet")
+@Entity(name = "Psp")
+@Table(name = "psp", schema = "timesheet")
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Booking {
+public class Psp {
 
 	@Id
-	@Column(name = "booking_id", nullable = false, unique = true)
+	@Column(name = "psp_id", nullable = false, unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer bookingId;
+	private Integer pspId;
 	
-	@Column(name = "day", nullable = false)
-	private LocalDate day;
+	@Column(name = "name", nullable = false)
+	private String name;
 	
 	@ManyToOne
-	@MapsId("userId")
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	@OneToMany(mappedBy = "booking")
-	private Set<BookingDetail> bookingDetails;
+	@MapsId("programId")
+	@JoinColumn(name = "program_id")
+	private Program program;
 	
 }

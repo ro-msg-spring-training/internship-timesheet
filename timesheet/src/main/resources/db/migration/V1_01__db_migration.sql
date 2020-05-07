@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS timesheet.booking_detail (
     booking_detail_id SERIAL PRIMARY KEY,
     start_hour time,
     end_hour time,
-    descripton varchar(255),
+    description varchar(255),
     status int,
     psp_id int references PSP (psp_id),
     booking_id int references booking (booking_id)

@@ -1,9 +1,9 @@
-package ro.msg.internship.repository;
+package ro.msg.internship.timesheet.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ro.msg.internship.model.Booking;
-import ro.msg.internship.model.BookingDetail;
+import ro.msg.internship.timesheet.model.Booking;
+import ro.msg.internship.timesheet.model.BookingDetail;
 
 import java.util.List;
 

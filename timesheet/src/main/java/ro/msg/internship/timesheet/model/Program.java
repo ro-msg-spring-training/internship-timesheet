@@ -1,4 +1,4 @@
-package ro.msg.internship.model;
+package ro.msg.internship.timesheet.model;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -32,7 +32,7 @@ public class Program {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer programId;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "program_name", nullable = false)
 	private String name;
 
 	@Column(name = "start_date", nullable = false)
@@ -42,7 +42,7 @@ public class Program {
 	private LocalDate endDate;
 
 	@Column(name = "working_hours", nullable = false)
-	private Float workingHours;
+	private Double workingHours;
 	
 	@OneToMany(mappedBy = "program")
 	private Set<User> users;

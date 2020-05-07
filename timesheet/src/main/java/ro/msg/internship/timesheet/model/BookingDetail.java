@@ -1,4 +1,4 @@
-package ro.msg.internship.model;
+package ro.msg.internship.timesheet.model;
 
 import java.time.LocalTime;
 
