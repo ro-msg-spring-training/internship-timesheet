@@ -2,6 +2,7 @@ package ro.msg.internship.timesheet.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Builder
@@ -16,7 +17,9 @@ public class BookingDetailDto {
     private LocalTime startHour;
     private LocalTime endHour;
     private String status;
-    private Float hours;
+    private double hours;
     private String pspName;
+    private LocalDate date;
+    private Integer bookingId;
 
 }
