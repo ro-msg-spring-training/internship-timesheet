@@ -19,6 +19,11 @@ public class LoginController {
     public UserDto loginUser(@RequestBody UserDto user) {
 
         User loggedUser = loginService.loginUser(UserBuilder.getUserFromDto(user));
+
+        if(null == loggedUser) {
+            return null;
+        }
+
         return UserBuilder.getDtoFromUser(loggedUser);
     }
 
