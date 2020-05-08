@@ -21,14 +21,14 @@ public class LoginService {
             throw new UserNotFoundException(user.getUsername());
         }
 
-        /*if(!User.PASSWORD_ENCODER.matches(user.getPassword(), loggedUser.getPassword())){
-            throw new PasswordNotMatchedException();
-        }*/
-
-        /*ca sa nu folosim dependintele de securitate (pentru testare)*/
-        if(!loggedUser.getPassword().equals(user.getPassword())) {
+        if(!User.PASSWORD_ENCODER.matches(user.getPassword(), loggedUser.getPassword())){
             throw new PasswordNotMatchedException();
         }
+
+        /*ca sa nu folosim dependintele de securitate (pentru testare)*/
+        /*if(!loggedUser.getPassword().equals(user.getPassword())) {
+            throw new PasswordNotMatchedException();
+        }*/
 
         return loggedUser;
 
