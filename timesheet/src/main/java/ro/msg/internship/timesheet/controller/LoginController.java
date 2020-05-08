@@ -20,10 +20,6 @@ public class LoginController {
 
         User loggedUser = loginService.loginUser(UserBuilder.getUserFromDto(user));
 
-        if(null == loggedUser) {
-            return null;
-        }
-
         return UserBuilder.getDtoFromUser(loggedUser);
     }
 

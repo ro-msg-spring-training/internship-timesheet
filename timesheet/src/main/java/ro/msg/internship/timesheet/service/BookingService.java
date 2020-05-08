@@ -26,7 +26,7 @@ public class BookingService {
     public Booking getBookingById(Integer bookingId) {
         return bookingRepository.findById(bookingId).orElse(null);
     }
-    
+
     public List<Booking> getBookingsByUserId(Integer userId) {
         User user = userService.findUserById(userId);
         return bookingRepository.findAllByUser(user);
