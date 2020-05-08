@@ -13,6 +13,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public User findUserById(Integer id){
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no user with id: " + id));
+    }
+
     public List<User> getUsers() {
         return userRepository.findAll();
     }

@@ -17,6 +17,7 @@ import ro.msg.internship.timesheet.service.BookingService;
 public class BookingController {
 
 	private final BookingService bookingService;
+
 	
 	@GetMapping("/bookings/{userId}")
 	public List<BookingDto> getBookingsForUser(@PathVariable Integer userId) {
@@ -25,7 +26,6 @@ public class BookingController {
 		bookingService.getBookingsByUserId(userId).forEach(bookingEntity -> {
 			bookings.add(BookingBuilder.getDtoFromEntity(bookingEntity));
 		});
-		
 		return bookings;
 	}
 	

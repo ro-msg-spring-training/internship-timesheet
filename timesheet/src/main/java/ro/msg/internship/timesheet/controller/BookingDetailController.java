@@ -38,7 +38,7 @@ public class BookingDetailController {
                 bookingDetail.getPsp().getName());
 
         BookingDetailDto bookingDetailDtoConverted = BookingDetailBuilder
-                .getDtoFromEntity(bookingDetail, 0.00);
+                .getDtoFromEntity(bookingDetail);
 
         return ResponseEntity.accepted().body(bookingDetailDtoConverted);
     }
@@ -49,8 +49,7 @@ public class BookingDetailController {
 
         BookingDetail bookingDetail = bookingDetailService.deleteBookingDetail(id);
 
-        BookingDetailDto bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail,
-                0.00);
+        BookingDetailDto bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail);
 
         return ResponseEntity.accepted().body(bookingDetailDto);
     }
@@ -64,7 +63,7 @@ public class BookingDetailController {
                 .getAllBookingDetail(bookingService.getBookingById(1)).keySet();
 
         for (BookingDetail bookingDetail : bookingDetails){
-            BookingDetailDto bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail, 0.0);
+            BookingDetailDto bookingDetailDto = BookingDetailBuilder.getDtoFromEntity(bookingDetail);
             bookingDetailDto.setBookingId(bookingDetail.getBooking().getBookingId());
             bookingDetailDto.setPspName(bookingDetail.getPsp().getName());
 

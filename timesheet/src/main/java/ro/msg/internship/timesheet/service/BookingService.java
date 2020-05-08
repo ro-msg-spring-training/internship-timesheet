@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import ro.msg.internship.timesheet.model.Booking;
+import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.BookingRepository;
 
 @Service
@@ -13,6 +14,7 @@ import ro.msg.internship.timesheet.repository.BookingRepository;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final UserService userService;
 
     public Booking createBooking(Booking booking) {
         Booking bookingFromDb = bookingRepository.findBookingByDay(booking.getDay()).get(0);
@@ -26,7 +28,8 @@ public class BookingService {
     }
     
     public List<Booking> getBookingsByUserId(Integer userId) {
-    	return bookingRepository.findBookingByUserId(userId);
+        User user = userService.findUserById(userId);
+        return bookingRepository.findAllByUser(user);
     }
 
 }

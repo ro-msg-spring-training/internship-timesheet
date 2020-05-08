@@ -19,8 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity(name = "User")
 @Table(name = "users", schema = "timesheet")
@@ -31,7 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Builder
 public class User {
 
-	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+//	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
 	@Id
 	@Column(name = "user_id", nullable = false, unique = true)
@@ -74,6 +74,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = PASSWORD_ENCODER.encode(password);
+		//this.password = PASSWORD_ENCODER.encode(password);
+		this.password = password;
 	}
 }

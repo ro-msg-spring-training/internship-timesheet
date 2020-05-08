@@ -28,7 +28,7 @@ public class BookingBuilder {
 		List<BookingDetailDto> bookingDetails = new ArrayList<>();
 
 		booking.getBookingDetails().forEach(bookingDetailEntity -> bookingDetails
-				.add(BookingDetailBuilder.getDtoFromEntity(bookingDetailEntity, 0)));
+				.add(BookingDetailBuilder.getDtoFromEntity(bookingDetailEntity)));
 		
 		return bookingDetails;
 	}
@@ -49,8 +49,8 @@ public class BookingBuilder {
 		LocalTime endHour = LocalTime.of(8, 0);
 		
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
-			if(bookingDetail.getStartHour().compareTo(endHour) > 0) {
-				endHour = bookingDetail.getStartHour();
+			if(bookingDetail.getEndHour().compareTo(endHour) > 0) {
+				endHour = bookingDetail.getEndHour();
 			}
 		}
 		
@@ -61,7 +61,7 @@ public class BookingBuilder {
 		double hours = 0;
 		
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
-			hours += MINUTES.between(bookingDetail.getEndHour(), bookingDetail.getStartHour()) / 60.0;
+			hours += MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0;
 		}
 		
 		return hours;
