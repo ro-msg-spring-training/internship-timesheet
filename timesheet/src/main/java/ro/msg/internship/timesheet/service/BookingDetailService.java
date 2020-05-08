@@ -4,37 +4,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.internship.timesheet.model.Booking;
 import ro.msg.internship.timesheet.model.BookingDetail;
-import ro.msg.internship.timesheet.model.Psp;
+import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.BookingDetailRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.time.temporal.ChronoUnit.MINUTES;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
 public class BookingDetailService {
     private final BookingDetailRepository bookingDetailRepository;
     private final BookingService bookingService;
-    private final PspService pspService;
+    private final UserService userService;
 
-    public Map<BookingDetail, Float> getAllBookingDetail(Booking booking) {
-        List<BookingDetail> bookingDetails = bookingDetailRepository.findAllByBooking(booking);
-        Map<BookingDetail, Float> bookingDetailAndHour = new HashMap<>();
-        for (BookingDetail bookingDetail : bookingDetails) {
-            long minutes = MINUTES.between(bookingDetail.getEndHour(), bookingDetail.getStartHour());
-            bookingDetailAndHour.put(bookingDetail, (float) (minutes / 60));
-        }
-        return bookingDetailAndHour;
-    }
+    @Transactional
+    public BookingDetail createBookingDetail(BookingDetail bookingDetail, LocalDate day, Integer userId) {
+        User user = userService.findUserById(userId);
+        Booking booking = Booking.builder().day(day).user(user).build();
+        Booking bookingInDb = bookingService.getOrCreateBooking(booking);
+        bookingDetail.setBooking(bookingInDb);
 
-    public BookingDetail createBookingDetail(BookingDetail bookingDetail, String name) {
-        Booking createdBooking = bookingService.getBookingById(bookingDetail.getBooking().getBookingId());
-        Psp pspFromDb = pspService.getPsp(name);
-        bookingDetail.setPsp(pspFromDb);
-        bookingDetail.setBooking(createdBooking);
         return bookingDetailRepository.save(bookingDetail);
     }
 

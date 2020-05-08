@@ -2,16 +2,7 @@ package ro.msg.internship.timesheet.model;
 
 import java.time.LocalTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +21,7 @@ import lombok.Setter;
 public class BookingDetail {
 
 	@Id
-	@Column(name = "booking_detail_id", nullable = false, unique = true)
+	@Column(name = "booking_detail_id", nullable = false, unique = true, columnDefinition = "serial")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bookingDetailId;
 	
@@ -47,14 +38,12 @@ public class BookingDetail {
 	@Enumerated
     private Status status;
 	
-	@ManyToOne
-	@MapsId("bookingId")
-	@JoinColumn(name = "booking_id")
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
 	private Booking booking;
 	
-	@ManyToOne
-	@MapsId("pspId")
-	@JoinColumn(name = "psp_id")
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "psp_id", referencedColumnName = "psp_id")
 	private Psp psp;
 	
 }

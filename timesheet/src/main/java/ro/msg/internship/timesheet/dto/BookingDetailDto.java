@@ -21,5 +21,7 @@ public class BookingDetailDto {
     private String pspName;
     private LocalDate date;
     private Integer bookingId;
+    private Integer pspId;
+    private Integer userId;
 
 }

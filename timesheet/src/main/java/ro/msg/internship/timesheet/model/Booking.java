@@ -3,16 +3,7 @@ package ro.msg.internship.timesheet.model;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,19 +22,18 @@ import lombok.Setter;
 public class Booking {
 
 	@Id
-	@Column(name = "booking_id", nullable = false, unique = true)
+	@Column(name = "booking_id", nullable = false, unique = true, columnDefinition = "serial")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bookingId;
 	
 	@Column(name = "day", nullable = false)
 	private LocalDate day;
 	
-	@ManyToOne
-	@MapsId("userId")
-	@JoinColumn(name = "user_id")
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "booking")
+	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
 	private Set<BookingDetail> bookingDetails;
 	
 }

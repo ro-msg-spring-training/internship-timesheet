@@ -3,13 +3,7 @@ package ro.msg.internship.timesheet.model;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +22,7 @@ import lombok.Setter;
 public class Program {
 
 	@Id
-	@Column(name = "program_id", nullable = false, unique = true)
+	@Column(name = "program_id", nullable = false, unique = true, columnDefinition = "serial")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer programId;
 
@@ -44,10 +38,10 @@ public class Program {
 	@Column(name = "working_hours", nullable = false)
 	private Double workingHours;
 	
-	@OneToMany(mappedBy = "program")
+	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
 	private Set<User> users;
 	
-	@OneToMany(mappedBy = "program")
+	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
 	private Set<Psp> psps;
 
 }

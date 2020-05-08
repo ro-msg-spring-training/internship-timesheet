@@ -1,6 +1,7 @@
 package ro.msg.internship.timesheet.dto.builder;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+
 import ro.msg.internship.timesheet.dto.BookingDetailDto;
 import ro.msg.internship.timesheet.model.BookingDetail;
 import ro.msg.internship.timesheet.model.Status;
@@ -17,21 +18,23 @@ public class BookingDetailBuilder {
                 .status(bookingDetail.getStatus().toString())
                 .date(bookingDetail.getBooking().getDay())
                 .bookingId(bookingDetail.getBooking().getBookingId())
+                .userId(bookingDetail.getBooking().getUser().getUserId())
+                .pspId(bookingDetail.getPsp().getPspId())
                 .build();
     }
 
-    public static BookingDetail getEntityFromDto(BookingDetailDto bookingDetailDto){
+    public static BookingDetail getEntityFromDto(BookingDetailDto bookingDetailDto) {
 
         return BookingDetail.builder()
-                        .bookingDetailId(bookingDetailDto.getId())
-                        .status(Status.CREATED)
-                        .description(bookingDetailDto.getDescription())
-                        .endHour(bookingDetailDto.getEndHour())
-                        .startHour(bookingDetailDto.getStartHour())
-                        .build();
+                .bookingDetailId(bookingDetailDto.getId())
+                .status(Status.CREATED)
+                .description(bookingDetailDto.getDescription())
+                .endHour(bookingDetailDto.getEndHour())
+                .startHour(bookingDetailDto.getStartHour())
+                .build();
     }
 
-    private static double getHour(BookingDetail bookingDetail){
-        return MINUTES.between(bookingDetail.getStartHour(),bookingDetail.getEndHour()) / 60.0;
+    private static double getHour(BookingDetail bookingDetail) {
+        return MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0;
     }
 }

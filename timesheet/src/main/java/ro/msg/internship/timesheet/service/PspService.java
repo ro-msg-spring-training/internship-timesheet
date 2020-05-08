@@ -10,8 +10,8 @@ import ro.msg.internship.timesheet.repository.PspRepository;
 public class PspService {
     private final PspRepository pspRepository;
 
-    public Psp getPsp(String name) {
-        return pspRepository.findPspByName(name).get(0);
+    public Psp getPspById(Integer id){
+        return pspRepository.findById(id).orElseThrow(() -> new RuntimeException("No psp with id:" + id));
     }
 
 }

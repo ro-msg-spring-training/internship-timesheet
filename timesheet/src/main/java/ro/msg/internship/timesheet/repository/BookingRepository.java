@@ -6,10 +6,11 @@ import ro.msg.internship.timesheet.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 	
-    List<Booking> findBookingByDay(LocalDate day);
+    Optional<Booking> findBookingByDayAndUser(LocalDate day, User user);
 
     List<Booking> findAllByUser(User user);
 }

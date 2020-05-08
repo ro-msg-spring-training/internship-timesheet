@@ -3,6 +3,7 @@ package ro.msg.internship.timesheet.service;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import ro.msg.internship.timesheet.model.Booking;
@@ -16,11 +17,9 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserService userService;
 
-    public Booking createBooking(Booking booking) {
-        Booking bookingFromDb = bookingRepository.findBookingByDay(booking.getDay()).get(0);
-        if (bookingFromDb != null)
-            return bookingRepository.save(booking);
-        return booking;
+    public Booking getOrCreateBooking(Booking booking) {
+        Optional<Booking> bookingFromDb = bookingRepository.findBookingByDayAndUser(booking.getDay(), booking.getUser());
+        return bookingFromDb.orElseGet(() -> bookingRepository.save(booking));
     }
 
     public Booking getBookingById(Integer bookingId) {
