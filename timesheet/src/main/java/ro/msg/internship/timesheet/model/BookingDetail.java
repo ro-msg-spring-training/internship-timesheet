@@ -38,11 +38,11 @@ public class BookingDetail {
 	@Enumerated
     private Status status;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
 	private Booking booking;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "psp_id", referencedColumnName = "psp_id")
 	private Psp psp;
 	

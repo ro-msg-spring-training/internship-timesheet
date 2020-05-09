@@ -38,10 +38,10 @@ public class Program {
 	@Column(name = "working_hours", nullable = false)
 	private Double workingHours;
 	
-	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program")
 	private Set<User> users;
 	
-	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "program")
 	private Set<Psp> psps;
 
 }

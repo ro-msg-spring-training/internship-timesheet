@@ -26,7 +26,7 @@ public class Psp {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "program_id", referencedColumnName = "program_id")
 	private Program program;
 	

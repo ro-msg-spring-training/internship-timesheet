@@ -12,57 +12,56 @@ import java.util.Set;
 
 @Entity(name = "User")
 @Table(name = "users", schema = "timesheet")
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Builder
 public class User {
 
-	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-	@Id
-	@Column(name = "user_id", nullable = false, unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userId;
+    @Id
+    @Column(name = "user_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userId;
 
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-	@Column(name = "username", nullable = false)
-	private String username;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-	@Column(name = "password", nullable = false)
-	private String password;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-	@Column(name = "role", nullable = false, columnDefinition = "int")
-	@Enumerated
+    @Column(name = "role", nullable = false, columnDefinition = "int")
+    @Enumerated
     private Role role;
-	
-	@ManyToOne
-	@MapsId("programId")
-	@JoinColumn(name = "program_id")
-	private Program program;
-	
-	@OneToMany(mappedBy = "user")
-	private Set<Booking> bookings;
 
-	public User(Integer userId, String firstName, String lastName, String username, String password, Role role, Program program, Set<Booking> bookings) {
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		setPassword(password);
-		this.role = role;
-		this.program = program;
-		this.bookings = bookings;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("programId")
+    @JoinColumn(name = "program_id")
+    private Program program;
 
-	public void setPassword(String password) {
-		//this.password = PASSWORD_ENCODER.encode(password);
-		this.password = password;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Booking> bookings;
+
+    public User(Integer userId, String firstName, String lastName, String username, String password, Role role, Program program, Set<Booking> bookings) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        setPassword(password);
+        this.role = role;
+        this.program = program;
+        this.bookings = bookings;
+    }
+
+    public void setPassword(String password) {
+        //this.password = PASSWORD_ENCODER.encode(password);
+        this.password = password;
+    }
 }

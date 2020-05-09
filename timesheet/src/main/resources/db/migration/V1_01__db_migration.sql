@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS timesheet;
-
 CREATE TABLE IF NOT EXISTS programs(
     program_id SERIAL PRIMARY KEY,
     program_name varchar(255),

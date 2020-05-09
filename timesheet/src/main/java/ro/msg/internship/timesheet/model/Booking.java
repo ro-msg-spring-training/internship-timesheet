@@ -1,15 +1,10 @@
 package ro.msg.internship.timesheet.model;
 
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.*;
 
 import javax.persistence.*;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity(name = "Booking")
 @Table(name = "booking", schema = "timesheet")
@@ -21,19 +16,19 @@ import lombok.Setter;
 @Builder
 public class Booking {
 
-	@Id
-	@Column(name = "booking_id", nullable = false, unique = true, columnDefinition = "serial")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer bookingId;
-	
-	@Column(name = "day", nullable = false)
-	private LocalDate day;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
-	private User user;
-	
-	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-	private Set<BookingDetail> bookingDetails;
-	
+    @Id
+    @Column(name = "booking_id", nullable = false, unique = true, columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer bookingId;
+
+    @Column(name = "day", nullable = false)
+    private LocalDate day;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.REMOVE)
+    private Set<BookingDetail> bookingDetails;
+
 }
