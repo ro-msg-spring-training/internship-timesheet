@@ -1,5 +1,6 @@
 package ro.msg.internship.timesheet.service;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,19 +32,14 @@ public class BookingDetailServiceTest {
     private BookingService bookingService;
     @Autowired
     private BookingDetailService bookingDetailService;
+    private Program program = new Program();
+    private Psp psp = new Psp();
+    private User user = new User();
+    private Booking booking = new Booking();
+    private BookingDetail bookingDetail = new BookingDetail();
 
     @Before
-    private void deleteElems() {
-        bookingDetailService.deleteAll();
-        bookingService.deleteAll();
-        userService.deleteAll();
-        programService.deleteAll();
-        pspService.deleteAll();
-    }
-
-    @Before
-    private void createElems(Program program, Psp psp, User user, Booking booking, BookingDetail bookingDetail) {
-
+    public void init() {
         program.setEndDate(LocalDate.of(2019, 8, 3));
         program.setStartDate(LocalDate.of(2019, 7, 15));
         program.setName("Summer School 2019");
@@ -61,7 +57,6 @@ public class BookingDetailServiceTest {
         user.setUserId(1);
 
         user = userService.createUser(user);
-        System.out.println(user.getUserId());
 
         psp.setName("PSP Self Study");
         psp.setProgram(program);
@@ -85,18 +80,12 @@ public class BookingDetailServiceTest {
         bookingDetail.setBooking(booking);
         bookingDetail.setBookingDetailId(1);
 
-        bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
-                userService.findUserById(userService.getUsers().get(0).getUserId()).getUserId());
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
+                user.getUserId());
     }
 
     @Test
     public void createBookingDetailTest() {
-        Program program = new Program();
-        Psp psp = new Psp();
-        User user = new User();
-        Booking booking = new Booking();
-        BookingDetail bookingDetail = new BookingDetail();
-        createElems(program, psp, user, booking, bookingDetail);
         assertEquals(bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
                 userService.findUserById(userService.getUsers().get(0).getUserId()).getUserId())
                 .getEndHour(), bookingDetail.getEndHour());
@@ -104,12 +93,6 @@ public class BookingDetailServiceTest {
 
     @Test
     public void deleteBookingDetailTest() {
-        Program program = new Program();
-        Psp psp = new Psp();
-        User user = new User();
-        Booking booking = new Booking();
-        BookingDetail bookingDetail = new BookingDetail();
-        createElems(program, psp, user, booking, bookingDetail);
         assertEquals(bookingDetailService
                 .deleteBookingDetail(bookingDetailService
                         .getBookingDetailsById(bookingDetailService
@@ -119,13 +102,16 @@ public class BookingDetailServiceTest {
 
     @Test(expected = BookingDetailNotFoundException.class)
     public void deleteBookingDetailFailTest() {
-        Program program = new Program();
-        Psp psp = new Psp();
-        User user = new User();
-        Booking booking = new Booking();
-        BookingDetail bookingDetail = new BookingDetail();
-        createElems(program, psp, user, booking, bookingDetail);
         bookingDetailService.deleteBookingDetail(-1);
+    }
+
+    @After
+    public void clear() {
+        bookingDetailService.deleteAll();
+        bookingService.deleteAll();
+        pspService.deleteAll();
+        userService.deleteAll();
+        programService.deleteAll();
     }
 
 }

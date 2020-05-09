@@ -38,21 +38,10 @@ public class BookingServiceTest {
     private Booking booking = new Booking();
     private BookingDetail bookingDetail = new BookingDetail();
 
-    @After
-    public void clear() {
-        bookingDetailService.deleteAll();
-        bookingService.deleteAll();
-        pspService.deleteAll();
-        programService.deleteAll();
-        userService.deleteAll();
-        System.out.println("delete all");
-    }
-
     @Before
-    public void init(){
-
-        program.setEndDate(LocalDate.of(2019,8,3));
-        program.setStartDate(LocalDate.of(2019,7,15));
+    public void init() {
+        program.setEndDate(LocalDate.of(2019, 8, 3));
+        program.setStartDate(LocalDate.of(2019, 7, 15));
         program.setName("Summer School 2019");
         program.setWorkingHours(8.00);
         program.setProgramId(1);
@@ -75,7 +64,7 @@ public class BookingServiceTest {
 
         psp = pspService.createPsp(psp);
 
-        booking.setDay(LocalDate.of(2020,5,30));
+        booking.setDay(LocalDate.of(2020, 5, 30));
         booking.setUser(user);
         booking.setBookingId(1);
 
@@ -83,16 +72,16 @@ public class BookingServiceTest {
 
         bookingDetail.setPsp(psp);
         bookingDetail.setBooking(booking);
-        bookingDetail.setStartHour(LocalTime.of(8,0));
-        bookingDetail.setEndHour(LocalTime.of(16,0));
+        bookingDetail.setStartHour(LocalTime.of(8, 0));
+        bookingDetail.setEndHour(LocalTime.of(16, 0));
         bookingDetail.setDescription("Value");
         bookingDetail.setPsp(psp);
         bookingDetail.setStatus(Status.CREATED);
         bookingDetail.setBooking(booking);
         bookingDetail.setBookingDetailId(1);
 
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail,booking.getDay(),
-                userService.findUserById(userService.getUsers().get(0).getUserId()).getUserId());
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
+                user.getUserId());
     }
 
     @Test
@@ -118,5 +107,14 @@ public class BookingServiceTest {
     @Test(expected = BookingNotFoundException.class)
     public void getBookingByIdFailTest() {
         bookingService.getBookingById(-1);
+    }
+
+    @After
+    public void clear() {
+        bookingDetailService.deleteAll();
+        bookingService.deleteAll();
+        pspService.deleteAll();
+        userService.deleteAll();
+        programService.deleteAll();
     }
 }

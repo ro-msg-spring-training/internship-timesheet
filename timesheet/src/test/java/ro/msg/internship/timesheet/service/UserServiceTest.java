@@ -1,37 +1,57 @@
 package ro.msg.internship.timesheet.service;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+import ro.msg.internship.timesheet.exception.UserNotFoundException;
+import ro.msg.internship.timesheet.model.Role;
 import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.UserRepository;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource("classpath:application-test.properties")
-class UserServiceTest {
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class UserServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+    private User user = new User();
 
-    @Test
-    void testFindByIdSuccess() {
+    @Before
+    public void init() {
+        user.setFirstName("Emanuela");
+        user.setLastName("Ionas");
+        user.setUsername("iema");
+        user.setPassword("iema");
+        user.setRole(Role.USER);
+        user.setUserId(1);
 
-        UserService userService = new UserService(userRepository);
-
-        User user = userService.findUserById(4);
-
-        Assertions.assertEquals("iema",user.getUsername());
+        user = userRepository.save(user);
     }
 
     @Test
-    void findByIdFail() {
+    public void testFindByIdSuccess() {
+
+        UserService userService = new UserService(userRepository);
+
+        user = userService.findUserById(user.getUserId());
+
+        Assertions.assertEquals("iema", user.getUsername());
+    }
+
+    @Test
+    public void findByIdFail() {
 
         UserService userService = new UserService(userRepository);
 
@@ -39,28 +59,28 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUsers() {
+    public void testGetUsers() {
 
         UserService userService = new UserService(userRepository);
 
         List<User> users = userService.getUsers();
 
-        Assertions.assertEquals(7, users.size());
+        Assertions.assertEquals(1, users.size());
 
     }
 
     @Test
-    void testFindByUsernameSuccess() {
+    public void testFindByUsernameSuccess() {
 
         UserService userService = new UserService(userRepository);
 
         User user = userService.findByUsername("iema");
 
-        Assertions.assertEquals(4, user.getUserId());
+        Assertions.assertEquals(userRepository.findAll().get(0).getUserId(), user.getUserId());
     }
 
-    @Test
-    void testFindByUsernameFail() {
+    @Test(expected = UserNotFoundException.class)
+    public void testFindByUsernameFail() {
 
         UserService userService = new UserService(userRepository);
 
@@ -69,4 +89,8 @@ class UserServiceTest {
         Assertions.assertNull(user);
     }
 
+    @After
+    public void clear() {
+        userRepository.deleteAll();
+    }
 }

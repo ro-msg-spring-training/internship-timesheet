@@ -110,6 +110,5 @@ public class PspServiceTest {
         pspService.deleteAll();
         userService.deleteAll();
         programService.deleteAll();
-        System.out.println("delete all");
     }
 }
