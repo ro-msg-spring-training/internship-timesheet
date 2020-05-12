@@ -1,6 +1,8 @@
 package ro.msg.internship.timesheet.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.msg.internship.timesheet.dto.builder.UserBuilder;
@@ -10,6 +12,8 @@ import ro.msg.internship.timesheet.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+@CrossOrigin("*")
 
 @RequiredArgsConstructor
 @RestController
