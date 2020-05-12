@@ -21,11 +21,11 @@ public class BookingDetailController {
     private final PspService pspService;
 
     @PostMapping(value = "/bookingDetail", produces = "application/json")
-    public ResponseEntity<BookingDetailDto> createBookingDetail(@RequestBody BookingDetailDto bookingDetailDto){
+    public ResponseEntity<BookingDetailDto> createBookingDetail(@RequestBody BookingDetailDto bookingDetailDto) {
 
         BookingDetail bookingDetail = BookingDetailBuilder.getEntityFromDto(bookingDetailDto);
         bookingDetail.setPsp(pspService.getPspById(bookingDetailDto.getPspId()));
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail,bookingDetailDto.getDate(),bookingDetailDto.getUserId());
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, bookingDetailDto.getDate(), bookingDetailDto.getUserId());
 
         BookingDetailDto bookingDetailDtoConverted = BookingDetailBuilder
                 .getDtoFromEntity(bookingDetail);
@@ -43,6 +43,5 @@ public class BookingDetailController {
 
         return ResponseEntity.accepted().body(bookingDetailDto);
     }
-
 
 }

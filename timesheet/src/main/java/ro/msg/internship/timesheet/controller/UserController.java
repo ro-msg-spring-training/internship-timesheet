@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.dto.UserDto;
+import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.service.UserService;
 
@@ -25,7 +25,7 @@ public class UserController {
     public List<UserDto> getUsers() {
         List<User> users = userService.getUsers();
         List<UserDto> userDtos = new ArrayList<>();
-        for(User u : users) {
+        for (User u : users) {
             userDtos.add(UserBuilder.getDtoFromUser(u));
         }
         return userDtos;
