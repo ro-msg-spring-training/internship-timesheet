@@ -38,13 +38,13 @@ class LoginServiceTest {
     }
 
     @Test
-    void userNotFound() {
+    void userNotFoundTest() {
         User user = User.builder().userId(1).build();
         assertThrows(UserNotFoundException.class, () -> {loginService.loginUser(user);});
     }
 
     @Test
-    void passwordIncorect() {
+    void passwordIncorectTest() {
         User userEncode = User.builder().userId(1).username("a").build();
         String password = new BCryptPasswordEncoder().encode("a");
         userEncode.setPassword(password);

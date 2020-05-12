@@ -26,9 +26,10 @@ public class LoginService {
         }
 
         /*ca sa nu folosim dependintele de securitate (pentru testare)*/
-        /*if(!loggedUser.getPassword().equals(user.getPassword())) {
-            throw new PasswordNotMatchedException();
-        }*/
+//        if(!loggedUser.getPassword().equals(user.getPassword())) {
+//            throw new PasswordNotMatchedException();
+//        }
+
 
         return loggedUser;
 

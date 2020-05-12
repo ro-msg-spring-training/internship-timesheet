@@ -1,15 +1,10 @@
 package ro.msg.internship.timesheet.model;
 
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.*;
 
 import javax.persistence.*;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity(name = "Program")
 @Table(name = "programs", schema = "timesheet")
@@ -38,10 +33,10 @@ public class Program {
 	@Column(name = "working_hours", nullable = false)
 	private Double workingHours;
 	
-	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program")
 	private Set<User> users;
 	
-	@OneToMany(mappedBy = "program",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "program")
 	private Set<Psp> psps;
 
 }

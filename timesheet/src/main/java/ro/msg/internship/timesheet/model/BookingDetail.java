@@ -1,14 +1,9 @@
 package ro.msg.internship.timesheet.model;
 
-import java.time.LocalTime;
+import lombok.*;
 
 import javax.persistence.*;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalTime;
 
 @Entity(name = "BookingDetail")
 @Table(name = "booking_detail", schema = "timesheet")
@@ -38,11 +33,11 @@ public class BookingDetail {
 	@Enumerated
     private Status status;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
 	private Booking booking;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "psp_id", referencedColumnName = "psp_id")
 	private Psp psp;
 	
