@@ -11,6 +11,8 @@ import ro.msg.internship.timesheet.service.PspService;
 
 import javax.transaction.Transactional;
 
+@CrossOrigin("*")
+
 @RestController
 @RequiredArgsConstructor
 public class BookingDetailController {
