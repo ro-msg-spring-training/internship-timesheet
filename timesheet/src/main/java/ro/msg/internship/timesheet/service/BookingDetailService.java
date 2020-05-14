@@ -36,16 +36,27 @@ public class BookingDetailService {
         return bookingDetail;
     }
 
-    public BookingDetail getBookingDetailsById(Integer id){
+    public BookingDetail getBookingDetailsById(Integer id) {
         return bookingDetailRepository.findById(id).orElseThrow(BookingDetailNotFoundException::new);
     }
 
-    public List<BookingDetail> getBookingDetails(){
+    public List<BookingDetail> getBookingDetails() {
         return bookingDetailRepository.findAll();
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         bookingDetailRepository.deleteAll();
     }
 
+    @Transactional
+    public BookingDetail updateBookingDetail(BookingDetail bookingDetail) {
+        BookingDetail bookingDetailInDb = bookingDetailRepository.findById(bookingDetail.getBookingDetailId()).
+                orElseThrow(BookingDetailNotFoundException::new);
+        bookingDetailInDb.setStartHour(bookingDetail.getStartHour());
+        bookingDetailInDb.setEndHour(bookingDetail.getEndHour());
+        bookingDetailInDb.setDescription(bookingDetail.getDescription());
+        bookingDetailInDb.setPsp(bookingDetail.getPsp());
+
+        return bookingDetailRepository.save(bookingDetailInDb);
+    }
 }

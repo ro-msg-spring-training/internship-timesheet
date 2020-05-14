@@ -32,8 +32,8 @@ public class BookingDetailBuilder {
                 .bookingDetailId(bookingDetailDto.getId())
                 .status(Status.CREATED)
                 .description(bookingDetailDto.getDescription())
-                .endHour(LocalTime.parse(bookingDetailDto.getEndHour(), DateTimeFormatter.ofPattern("HH:mm:ss")))
-                .startHour(LocalTime.parse(bookingDetailDto.getStartHour(), DateTimeFormatter.ofPattern("HH:mm:ss")))
+                .endHour(LocalTime.parse(bookingDetailDto.getEndHour(), DateTimeFormatter.ofPattern("HH:mm")))
+                .startHour(LocalTime.parse(bookingDetailDto.getStartHour(), DateTimeFormatter.ofPattern("HH:mm")))
                 .build();
     }
 
