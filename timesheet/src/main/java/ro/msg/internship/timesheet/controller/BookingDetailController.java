@@ -10,6 +10,8 @@ import ro.msg.internship.timesheet.service.BookingDetailService;
 import ro.msg.internship.timesheet.service.PspService;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @CrossOrigin("*")
 
@@ -20,12 +22,13 @@ public class BookingDetailController {
     private final BookingDetailService bookingDetailService;
     private final PspService pspService;
 
-    @PostMapping(value = "/bookingDetail", produces = "application/json")
-    public ResponseEntity<BookingDetailDto> createBookingDetail(@RequestBody BookingDetailDto bookingDetailDto) {
+    @PostMapping(value = "/bookingDetail", consumes = "multipart/form-data" ,
+            produces = { "application/json", "application/xml" })
+    public ResponseEntity<BookingDetailDto> createBookingDetail(@ModelAttribute BookingDetailDto bookingDetailDto) {
 
         BookingDetail bookingDetail = BookingDetailBuilder.getEntityFromDto(bookingDetailDto);
         bookingDetail.setPsp(pspService.getPspById(bookingDetailDto.getPspId()));
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, bookingDetailDto.getDate(), bookingDetailDto.getUserId());
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, LocalDate.parse(bookingDetailDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), bookingDetailDto.getUserId());
 
         BookingDetailDto bookingDetailDtoConverted = BookingDetailBuilder
                 .getDtoFromEntity(bookingDetail);

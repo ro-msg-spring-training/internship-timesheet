@@ -1,22 +1,25 @@
 package ro.msg.internship.timesheet.dto.builder;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
-
 import ro.msg.internship.timesheet.dto.BookingDetailDto;
 import ro.msg.internship.timesheet.model.BookingDetail;
 import ro.msg.internship.timesheet.model.Status;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class BookingDetailBuilder {
     public static BookingDetailDto getDtoFromEntity(BookingDetail bookingDetail) {
         return BookingDetailDto.builder()
                 .id(bookingDetail.getBookingDetailId())
                 .description(bookingDetail.getDescription())
-                .endHour(bookingDetail.getEndHour())
+                .endHour(bookingDetail.getEndHour().toString())
                 .pspName(bookingDetail.getPsp().getName())
                 .hours(getHour(bookingDetail))
-                .startHour(bookingDetail.getStartHour())
+                .startHour(bookingDetail.getStartHour().toString())
                 .status(bookingDetail.getStatus().toString())
-                .date(bookingDetail.getBooking().getDay())
+                .date(bookingDetail.getBooking().getDay().toString())
                 .bookingId(bookingDetail.getBooking().getBookingId())
                 .userId(bookingDetail.getBooking().getUser().getUserId())
                 .pspId(bookingDetail.getPsp().getPspId())
@@ -29,8 +32,8 @@ public class BookingDetailBuilder {
                 .bookingDetailId(bookingDetailDto.getId())
                 .status(Status.CREATED)
                 .description(bookingDetailDto.getDescription())
-                .endHour(bookingDetailDto.getEndHour())
-                .startHour(bookingDetailDto.getStartHour())
+                .endHour(LocalTime.parse(bookingDetailDto.getEndHour(), DateTimeFormatter.ofPattern("HH:mm:ss")))
+                .startHour(LocalTime.parse(bookingDetailDto.getStartHour(), DateTimeFormatter.ofPattern("HH:mm:ss")))
                 .build();
     }
 
