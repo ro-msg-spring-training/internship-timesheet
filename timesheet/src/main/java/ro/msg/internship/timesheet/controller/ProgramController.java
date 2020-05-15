@@ -2,12 +2,12 @@ package ro.msg.internship.timesheet.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ro.msg.internship.timesheet.dto.ProgramDto;
 import ro.msg.internship.timesheet.dto.PspDto;
+import ro.msg.internship.timesheet.dto.builder.ProgramBuilder;
 import ro.msg.internship.timesheet.dto.builder.PspBuilder;
+import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.model.Psp;
 import ro.msg.internship.timesheet.service.ProgramService;
 
@@ -25,16 +25,38 @@ public class ProgramController {
 
     @GetMapping("/programs/{programName}/psps")
     public ResponseEntity<List<PspDto>> getPsps(@PathVariable String programName) {
-
-        Set<Psp> psps = programService.getPsps(programName);
-
         List<PspDto> pspDtos = new ArrayList<>();
-
-        for (Psp psp : psps) {
-            PspDto pspDto = PspBuilder.getDtoFromEntity(psp);
-            pspDtos.add(pspDto);
-        }
-
+        programService.getPspsByName(programName).forEach(psp -> pspDtos.add(PspBuilder.getDtoFromEntity(psp)));
         return ResponseEntity.accepted().body(pspDtos);
     }
+
+    @GetMapping("/programs")
+    public ResponseEntity<List<ProgramDto>> getPrograms() {
+        List<ProgramDto> programDtos = new ArrayList<>();
+        programService.getPrograms().forEach(programEntity -> programDtos.add(ProgramBuilder.getDtoFromEntity(programEntity)));
+        return ResponseEntity.accepted().body(programDtos);
+    }
+
+    @GetMapping("/programs/{programId}")
+    public ResponseEntity<ProgramDto> getProgram(@PathVariable Integer programId) {
+        return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(programService.getProgramById(programId)));
+    }
+
+    @PostMapping("/programs")
+    public ResponseEntity<ProgramDto> createProgram(@RequestBody ProgramDto programDto) {
+        Program createdProgram = programService.createProgram(ProgramBuilder.getEntityFromDto(programDto));
+        return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(createdProgram));
+    }
+
+    @PutMapping("/programs")
+    public ResponseEntity<ProgramDto> updateProgram(@RequestBody ProgramDto programDto) {
+        Program updatedProgram = programService.updateProgram(ProgramBuilder.getEntityFromDto(programDto));
+        return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(updatedProgram));
+    }
+
+    @DeleteMapping("/programs/{programId}")
+    public ResponseEntity<ProgramDto> deleteProgram(@PathVariable Integer programId) {
+        return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(programService.deleteProgramById(programId)));
+    }
+
 }

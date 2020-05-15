@@ -36,7 +36,7 @@ public class Program {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program")
 	private Set<User> users;
 	
-	@OneToMany(mappedBy = "program")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "program")
 	private Set<Psp> psps;
 
 }

@@ -6,27 +6,42 @@ import ro.msg.internship.timesheet.exception.PspNotFoundException;
 import ro.msg.internship.timesheet.model.Psp;
 import ro.msg.internship.timesheet.repository.PspRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PspService {
     private final PspRepository pspRepository;
 
-    @Transactional
-    public Psp getPspById(Integer id){
+    public Psp getPspById(Integer id) {
         return pspRepository.findById(id).orElseThrow(PspNotFoundException::new);
     }
 
-    public Psp createPsp(Psp psp){
+    public Psp createPsp(Psp psp) {
         return pspRepository.save(psp);
     }
 
-    public List<Psp> getPsps() {return pspRepository.findAll();}
+    public List<Psp> getPsps() {
+        return pspRepository.findAll();
+    }
 
-    public void deleteAll(){
+    public void deleteAll() {
         pspRepository.deleteAll();
     }
 
+    public Psp updatePsp(Psp psp) {
+        Optional<Psp> pspInDB = pspRepository.findById(psp.getPspId());
+        if (pspInDB.isPresent()) {
+            return pspRepository.save(psp);
+        } else {
+            throw new PspNotFoundException();
+        }
+    }
+
+    public Psp deletePspById(Integer pspId) {
+        Psp pspInDB = pspRepository.findById(pspId).orElseThrow(PspNotFoundException::new);
+        pspRepository.delete(pspInDB);
+        return pspInDB;
+    }
 }

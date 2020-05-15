@@ -14,7 +14,9 @@ import ro.msg.internship.timesheet.exception.ProgramNotFoundException;
 import ro.msg.internship.timesheet.model.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,81 +27,122 @@ public class ProgramServiceTest {
     private PspService pspService;
     @Autowired
     private ProgramService programService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BookingService bookingService;
-    @Autowired
-    private BookingDetailService bookingDetailService;
-    private Program program = new Program();
-    private Psp psp = new Psp();
-    private User user = new User();
-    private Booking booking = new Booking();
-    private BookingDetail bookingDetail = new BookingDetail();
+    private Program program;
 
     @Before
     public void init() {
-        program.setEndDate(LocalDate.of(2019, 8, 3));
-        program.setStartDate(LocalDate.of(2019, 7, 15));
+        program = new Program();
         program.setName("Summer School 2019");
+        program.setStartDate(LocalDate.of(2019, 7, 15));
+        program.setEndDate(LocalDate.of(2019, 8, 3));
         program.setWorkingHours(8.00);
-        program.setProgramId(1);
-
-        program = programService.createProgram(program);
-
-        user.setFirstName("Patricia");
-        user.setLastName("Truta");
-        user.setUsername("tpatricia");
-        user.setPassword("tpatricia");
-        user.setRole(Role.USER);
-        user.setProgram(program);
-        user.setUserId(1);
-
-        user = userService.createUser(user);
-
-        psp.setName("PSP Self Study");
-        psp.setProgram(program);
-        psp.setPspId(1);
-
-        psp = pspService.createPsp(psp);
-
-        booking.setDay(LocalDate.of(2020, 5, 30));
-        booking.setUser(user);
-        booking.setBookingId(1);
-
-        booking = bookingService.getOrCreateBooking(booking);
-
-        bookingDetail.setPsp(psp);
-        bookingDetail.setBooking(booking);
-        bookingDetail.setStartHour(LocalTime.of(8, 0));
-        bookingDetail.setEndHour(LocalTime.of(16, 0));
-        bookingDetail.setDescription("Value");
-        bookingDetail.setPsp(psp);
-        bookingDetail.setStatus(Status.CREATED);
-        bookingDetail.setBooking(booking);
-        bookingDetail.setBookingDetailId(1);
-
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
-                user.getUserId());
     }
 
     @Test
-    public void getProgramByIdTest(){
+    public void createProgramTest() {
+        Assert.assertEquals(0, programService.getPrograms().size());
+
+        Program createdProgram = programService.createProgram(program);
+
+        Assert.assertEquals(1, programService.getPrograms().size());
+        Assert.assertEquals(program.getName(), createdProgram.getName());
+        Assert.assertEquals(program.getStartDate(), createdProgram.getStartDate());
+        Assert.assertEquals(program.getEndDate(), createdProgram.getEndDate());
+        Assert.assertEquals(program.getWorkingHours(), createdProgram.getWorkingHours());
+    }
+
+    @Test
+    public void getProgramByIdTest() {
+        Program createdProgram = programService.createProgram(program);
+
         Assert.assertEquals(programService.getProgramById(programService
-                .getPrograms().get(0).getProgramId()).getName(),program.getName());
+                .getPrograms().get(0).getProgramId()).getName(), createdProgram.getName());
     }
 
     @Test(expected = ProgramNotFoundException.class)
-    public void getProgramByIdTestFail(){
+    public void getProgramByIdTestFail() {
         programService.getProgramById(-1);
+    }
+
+    @Test
+    public void getProgramsTest() {
+        Assert.assertEquals(0, programService.getPrograms().size());
+
+        programService.createProgram(program);
+        programService.createProgram(new Program(null, "Test Program 2",
+                LocalDate.of(2020, 3, 10),
+                LocalDate.of(2020, 5, 29), 6.0,
+                new HashSet<>(), new HashSet<>()));
+
+        List<Program> createdPrograms = programService.getPrograms();
+        Assert.assertEquals(2, createdPrograms.size());
+        Assert.assertEquals(program.getName(), createdPrograms.get(0).getName());
+        Assert.assertEquals("Test Program 2", createdPrograms.get(1).getName());
+    }
+
+    @Test
+    public void deleteAllTest() {
+        Assert.assertEquals(0, programService.getPrograms().size());
+
+        programService.createProgram(program);
+        programService.createProgram(new Program(2, "Test Program 2",
+                LocalDate.of(2020, 3, 10),
+                LocalDate.of(2020, 5, 29), 6.0,
+                new HashSet<>(), new HashSet<>()));
+        Assert.assertEquals(2, programService.getPrograms().size());
+
+        programService.deleteAll();
+        Assert.assertEquals(0, programService.getPrograms().size());
+    }
+
+    @Test
+    public void getProgramByNameTest() {
+        programService.createProgram(program);
+
+        Assert.assertEquals(program.getName(), programService.getProgramByName(program.getName()).getName());
+    }
+
+    @Test
+    public void getPspsByNameTest() {
+        Program createdProgram = programService.createProgram(program);
+        pspService.createPsp(new Psp(null, "Test Psp 1", createdProgram));
+        pspService.createPsp(new Psp(null, "Test Psp 2", createdProgram));
+        pspService.createPsp(new Psp(null, "Test Psp 3", createdProgram));
+
+        Set<Psp> psps = programService.getPspsByName(createdProgram.getName());
+        Assert.assertEquals(3, psps.size());
+    }
+
+    @Test
+    public void updateProgramTest() {
+        Program createdProgram = programService.createProgram(program);
+        createdProgram.setName("Updated Program Name");
+        createdProgram.setWorkingHours(4.0);
+
+        Program updatedProgram = programService.updateProgram(createdProgram);
+        Assert.assertEquals(createdProgram.getName(), updatedProgram.getName());
+        Assert.assertEquals(createdProgram.getWorkingHours(), updatedProgram.getWorkingHours());
+    }
+
+    @Test
+    public void deleteProgramByIdTest() {
+        Assert.assertEquals(0, programService.getPrograms().size());
+
+        Program createdProgram = programService.createProgram(program);
+        programService.createProgram(new Program(2, "Test Program 2",
+                LocalDate.of(2020, 3, 10),
+                LocalDate.of(2020, 5, 29), 6.0,
+                new HashSet<>(), new HashSet<>()));
+        Assert.assertEquals(2, programService.getPrograms().size());
+
+        Program deletedProgram = programService.deleteProgramById(createdProgram.getProgramId());
+        Assert.assertEquals(1, programService.getPrograms().size());
+        Assert.assertEquals(createdProgram.getProgramId(), deletedProgram.getProgramId());
     }
 
     @After
     public void clear() {
-        bookingDetailService.deleteAll();
-        bookingService.deleteAll();
         pspService.deleteAll();
-        userService.deleteAll();
         programService.deleteAll();
     }
 }

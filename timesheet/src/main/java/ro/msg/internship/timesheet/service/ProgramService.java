@@ -9,6 +9,7 @@ import ro.msg.internship.timesheet.repository.ProgramRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,7 +29,6 @@ public class ProgramService {
         return programRepository.findAll();
     }
 
-    @Transactional
     public void deleteAll() {
         programRepository.deleteAll();
     }
@@ -37,9 +37,22 @@ public class ProgramService {
         return programRepository.findByName(name).orElseThrow(ProgramNotFoundException::new);
     }
 
-    public Set<Psp> getPsps(String name) {
-        Program program = getProgramByName(name);
+    public Set<Psp> getPspsByName(String name) {
+        return getProgramByName(name).getPsps();
+    }
 
-        return program.getPsps();
+    public Program updateProgram(Program program) {
+        Optional<Program> programInDB = programRepository.findById(program.getProgramId());
+        if (programInDB.isPresent()) {
+            return programRepository.save(program);
+        } else {
+            throw new ProgramNotFoundException();
+        }
+    }
+
+    public Program deleteProgramById(Integer programId) {
+        Program programInDB = programRepository.findById(programId).orElseThrow(ProgramNotFoundException::new);
+        programRepository.deleteById(programId);
+        return programInDB;
     }
 }
