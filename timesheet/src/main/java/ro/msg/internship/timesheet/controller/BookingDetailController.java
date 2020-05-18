@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@CrossOrigin("*")
 
 @RestController
 @RequiredArgsConstructor

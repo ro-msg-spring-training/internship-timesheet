@@ -11,7 +11,6 @@ import ro.msg.internship.timesheet.service.PspService;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("*")
 
 @RestController
 @RequiredArgsConstructor

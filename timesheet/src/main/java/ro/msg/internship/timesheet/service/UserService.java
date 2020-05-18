@@ -38,6 +38,7 @@ public class UserService {
             return userRepository.save(user);
         throw new UsernameFoundException(user.getUsername());
     }
+
     public void deleteAll(){
         userRepository.deleteAll();
     }

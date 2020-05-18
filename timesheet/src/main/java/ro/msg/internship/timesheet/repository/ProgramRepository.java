@@ -9,4 +9,5 @@ import ro.msg.internship.timesheet.model.Program;
 public interface ProgramRepository extends JpaRepository<Program, Integer> {
 	
 	Optional<Program> findByName(String name);
+
 }

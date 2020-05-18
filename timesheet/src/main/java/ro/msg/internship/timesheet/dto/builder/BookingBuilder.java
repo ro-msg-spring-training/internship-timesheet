@@ -4,6 +4,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ro.msg.internship.timesheet.dto.BookingDetailDto;
@@ -29,7 +30,9 @@ public class BookingBuilder {
 
 		booking.getBookingDetails().forEach(bookingDetailEntity -> bookingDetails
 				.add(BookingDetailBuilder.getDtoFromEntity(bookingDetailEntity)));
-		
+
+		bookingDetails.sort((o1, o2) -> o1.getStartHour().compareTo(o2.getStartHour()));
+
 		return bookingDetails;
 	}
 	

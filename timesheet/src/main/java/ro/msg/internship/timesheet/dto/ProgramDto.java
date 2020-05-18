@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Getter
 public class ProgramDto {
 
+    private String name;
     private Integer programId;
     private LocalDate startDate;
     private LocalDate endDate;

@@ -8,6 +8,7 @@ import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.BookingRepository;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,13 @@ public class BookingService {
 
     public List<Booking> getBookingsByUserId(Integer userId) {
         User user = userService.findUserById(userId);
-        return bookingRepository.findAllByUser(user);
+        List<Booking> bookingList = bookingRepository.findAllByUser(user);
+
+        Collections.sort(bookingList, (o1, o2) -> {
+            return o1.getDay().compareTo(o2.getDay());
+        });
+
+        return bookingList;
     }
 
     @Transactional
