@@ -28,6 +28,12 @@ INSERT INTO "timesheet"."booking" (day, user_id) VALUES ('2020-05-30',1),
        ('2020-05-30', 6),
        ('2020-05-30', 7);
 INSERT INTO "timesheet"."booking_detail" ( start_hour, end_hour, description, status, psp_id, booking_id)
-                                         	VALUES ( '8:00', '16:00', 'Value',  1, 1, 1);
+                                         	VALUES ( '8:00', '16:00', 'Value',  1, 1, 1),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 2),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 3),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 4),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 5),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 6),
+                                         	( '8:00', '16:00', 'Value',  1, 1, 7);
 
 

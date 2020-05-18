@@ -45,4 +45,8 @@ public class BookingService {
         bookingRepository.deleteAll();
     }
 
+    public void deleteBooking(Booking booking){
+        bookingRepository.delete(booking);
+    }
+
 }

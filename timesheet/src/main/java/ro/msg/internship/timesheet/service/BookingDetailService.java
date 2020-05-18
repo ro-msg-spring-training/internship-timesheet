@@ -29,10 +29,16 @@ public class BookingDetailService {
         return bookingDetailRepository.save(bookingDetail);
     }
 
+    @Transactional
     public BookingDetail deleteBookingDetail(Integer id) {
         BookingDetail bookingDetail = bookingDetailRepository.findById(id)
                 .orElseThrow(BookingDetailNotFoundException::new);
-        bookingDetailRepository.deleteById(id);
+
+        Booking booking = bookingService.getBookingById(bookingDetail.getBooking().getBookingId());
+        if(booking.getBookingDetails().size() == 1) {
+            bookingService.deleteBooking(booking);
+        } else
+            bookingDetailRepository.deleteById(id);
         return bookingDetail;
     }
 
