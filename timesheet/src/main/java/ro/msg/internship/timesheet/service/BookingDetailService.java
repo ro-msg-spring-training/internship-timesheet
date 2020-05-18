@@ -19,12 +19,28 @@ public class BookingDetailService {
     private final BookingService bookingService;
     private final UserService userService;
 
+    private boolean isOverlap(BookingDetail tested, BookingDetail reference){
+        if(tested.getBooking().equals(reference.getBooking())){
+            if(tested.getEndHour().isBefore(reference.getStartHour()))return false;
+            if(tested.getStartHour().isAfter(reference.getEndHour()))return false;
+            if(tested.getEndHour().equals(reference.getStartHour()))return false;
+            if(tested.getStartHour().equals(reference.getEndHour()))return false;
+            return true;
+        }
+        return false;
+    }
+
     @Transactional
     public BookingDetail createBookingDetail(BookingDetail bookingDetail, LocalDate day, Integer userId) {
         User user = userService.findUserById(userId);
         Booking booking = Booking.builder().day(day).user(user).build();
         Booking bookingInDb = bookingService.getOrCreateBooking(booking);
         bookingDetail.setBooking(bookingInDb);
+
+        List<BookingDetail> detailList = bookingDetailRepository.findAllByBooking(bookingInDb);
+        for(BookingDetail detail : detailList){
+            if(isOverlap(bookingDetail, detail)) return null;
+        }
 
         return bookingDetailRepository.save(bookingDetail);
     }
