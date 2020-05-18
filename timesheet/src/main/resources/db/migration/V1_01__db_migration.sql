@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     first_name varchar(255),
     last_name varchar(255),
-    username varchar(255),
+    username varchar(255) UNIQUE,
     password varchar(255),
     role int,
     program_id int references programs (program_id)
