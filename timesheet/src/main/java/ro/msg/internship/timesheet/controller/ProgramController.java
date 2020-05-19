@@ -8,12 +8,10 @@ import ro.msg.internship.timesheet.dto.PspDto;
 import ro.msg.internship.timesheet.dto.builder.ProgramBuilder;
 import ro.msg.internship.timesheet.dto.builder.PspBuilder;
 import ro.msg.internship.timesheet.model.Program;
-import ro.msg.internship.timesheet.model.Psp;
 import ro.msg.internship.timesheet.service.ProgramService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @RestController
@@ -56,6 +54,13 @@ public class ProgramController {
     @DeleteMapping("/programs/{programId}")
     public ResponseEntity<ProgramDto> deleteProgram(@PathVariable Integer programId) {
         return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(programService.deleteProgramById(programId)));
+    }
+
+    @GetMapping("/activePrograms")
+    public ResponseEntity<List<ProgramDto>> getActivePrograms() {
+        List<ProgramDto> programDtos = new ArrayList<>();
+        programService.getActivePrograms().forEach(programEntity -> programDtos.add(ProgramBuilder.getDtoFromEntity(programEntity)));
+        return ResponseEntity.accepted().body(programDtos);
     }
 
 }

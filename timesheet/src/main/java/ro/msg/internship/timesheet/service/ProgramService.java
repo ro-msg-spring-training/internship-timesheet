@@ -7,10 +7,12 @@ import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.model.Psp;
 import ro.msg.internship.timesheet.repository.ProgramRepository;
 
-import javax.transaction.Transactional;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +56,17 @@ public class ProgramService {
         Program programInDB = programRepository.findById(programId).orElseThrow(ProgramNotFoundException::new);
         programRepository.deleteById(programId);
         return programInDB;
+    }
+
+    public List<Program> getActivePrograms(){
+        Clock clock = Clock.systemUTC();
+
+        LocalDate localdate = LocalDate.now(clock);
+        return programRepository
+                .findAll()
+                .stream()
+                .filter(program -> program.getEndDate().compareTo(localdate) >= 0 &&
+                        program.getStartDate().compareTo(localdate) <= 0)
+                .collect(Collectors.toList());
     }
 }
