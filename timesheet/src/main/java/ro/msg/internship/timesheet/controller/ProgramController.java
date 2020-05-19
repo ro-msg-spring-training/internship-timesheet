@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.internship.timesheet.dto.ProgramDto;
 import ro.msg.internship.timesheet.dto.PspDto;
+import ro.msg.internship.timesheet.dto.UserDto;
 import ro.msg.internship.timesheet.dto.builder.ProgramBuilder;
 import ro.msg.internship.timesheet.dto.builder.PspBuilder;
+import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.service.ProgramService;
 
@@ -25,6 +27,13 @@ public class ProgramController {
         List<PspDto> pspDtos = new ArrayList<>();
         programService.getPspsByName(programName).forEach(psp -> pspDtos.add(PspBuilder.getDtoFromEntity(psp)));
         return ResponseEntity.accepted().body(pspDtos);
+    }
+
+    @GetMapping("/programs/{programName}/users")
+    public ResponseEntity<List<UserDto>> getUsers(@PathVariable String programName) {
+        List<UserDto> userDtos = new ArrayList<>();
+        programService.getUsersByName(programName).forEach(user -> userDtos.add(UserBuilder.getDtoFromUser(user)));
+        return ResponseEntity.accepted().body(userDtos);
     }
 
     @GetMapping("/programs")

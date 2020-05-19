@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ro.msg.internship.timesheet.exception.ProgramNotFoundException;
 import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.model.Psp;
+import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.ProgramRepository;
 
 import java.time.Clock;
@@ -41,6 +42,10 @@ public class ProgramService {
 
     public Set<Psp> getPspsByName(String name) {
         return getProgramByName(name).getPsps();
+    }
+
+    public Set<User> getUsersByName(String name) {
+        return getProgramByName(name).getUsers();
     }
 
     public Program updateProgram(Program program) {
