@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -103,6 +104,14 @@ public class BookingDetailServiceTest {
     @Test(expected = BookingDetailNotFoundException.class)
     public void deleteBookingDetailFailTest() {
         bookingDetailService.deleteBookingDetail(-1);
+    }
+
+    @Test
+    public void updateBookingDetailTest() {
+        bookingDetail.setDescription("test");
+        BookingDetail b = bookingDetailService.updateBookingDetail(bookingDetail);
+        assertNotNull(b);
+        assertEquals("test", b.getDescription());
     }
 
     @After
