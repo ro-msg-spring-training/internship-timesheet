@@ -35,5 +35,22 @@ public class LoginService {
 
     }
 
+    public User loginAdmin(User user) {
+        User loggedUser = userRepository.findUserByUsername(user.getUsername()).orElse(null);
+
+        if(loggedUser == null) {
+            throw new UserNotFoundException(user.getUsername());
+        }
+
+        if(!User.PASSWORD_ENCODER.matches(user.getPassword(), loggedUser.getPassword())){
+            throw new PasswordNotMatchedException();
+        }
+
+        if(loggedUser.getRole().name().equals("ADMIN")) {
+            return loggedUser;
+        }
+
+        return null;
+    }
 
 }
