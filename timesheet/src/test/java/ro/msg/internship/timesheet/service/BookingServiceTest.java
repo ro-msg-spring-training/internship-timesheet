@@ -15,7 +15,7 @@ import ro.msg.internship.timesheet.model.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,8 +38,7 @@ public class BookingServiceTest {
     private Booking booking = new Booking();
     private BookingDetail bookingDetail = new BookingDetail();
 
-    @Before
-    public void init() {
+    public void populate() {
         program.setEndDate(LocalDate.of(2019, 8, 3));
         program.setStartDate(LocalDate.of(2019, 7, 15));
         program.setName("Summer School 2019");
@@ -79,13 +78,14 @@ public class BookingServiceTest {
         bookingDetail.setStatus(Status.CREATED);
         bookingDetail.setBooking(booking);
         bookingDetail.setBookingDetailId(1);
-
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
-                user.getUserId());
     }
 
     @Test
     public void getOrCreateBookingTest() {
+        this.populate();
+        Booking b = bookingService.getOrCreateBooking(bookingService.getBookingById(bookingService
+                    .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId()));
+        System.out.println(b.toString());
         assertEquals(bookingService.getOrCreateBooking(bookingService.getBookingById(bookingService
                 .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId()))
                 .getDay(),booking.getDay());
@@ -93,6 +93,7 @@ public class BookingServiceTest {
 
     @Test
     public void getBookingByIdTest() {
+        this.populate();
         assertEquals(bookingService.getBookingById(bookingService
                 .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId())
                 .getDay(),booking.getDay());
@@ -100,15 +101,18 @@ public class BookingServiceTest {
 
     @Test
     public void getBookingsByUserIdTest() {
+        this.populate();
         assertEquals(bookingService.getBookingsByUserId(userService.getUsers().get(0).getUserId())
                 .get(0).getDay(),booking.getDay());
     }
 
     @Test(expected = BookingNotFoundException.class)
     public void getBookingByIdFailTest() {
+        this.populate();
         bookingService.getBookingById(-1);
     }
 
+    @Before
     @After
     public void clear() {
         bookingDetailService.deleteAll();

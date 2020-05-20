@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "Program")
-@Table(name = "programs", schema = "timesheet")
+@Table(name = "programs")
 
 @Getter
 @Setter

@@ -39,8 +39,7 @@ public class BookingDetailServiceTest {
     private Booking booking = new Booking();
     private BookingDetail bookingDetail = new BookingDetail();
 
-    @Before
-    public void init() {
+    public void populate() {
         program.setEndDate(LocalDate.of(2019, 8, 3));
         program.setStartDate(LocalDate.of(2019, 7, 15));
         program.setName("Summer School 2019");
@@ -80,20 +79,19 @@ public class BookingDetailServiceTest {
         bookingDetail.setStatus(Status.CREATED);
         bookingDetail.setBooking(booking);
         bookingDetail.setBookingDetailId(1);
-
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
-                user.getUserId());
     }
 
     @Test
     public void createBookingDetailTest() {
-        assertEquals(bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(),
-                userService.findUserById(userService.getUsers().get(0).getUserId()).getUserId())
-                .getEndHour(), bookingDetail.getEndHour());
+        this.populate();
+        BookingDetail detail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
+        assertEquals(detail.getEndHour(), bookingDetail.getEndHour());
     }
 
     @Test
     public void deleteBookingDetailTest() {
+        this.populate();
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
         assertEquals(bookingDetailService
                 .deleteBookingDetail(bookingDetailService
                         .getBookingDetailsById(bookingDetailService
@@ -103,17 +101,21 @@ public class BookingDetailServiceTest {
 
     @Test(expected = BookingDetailNotFoundException.class)
     public void deleteBookingDetailFailTest() {
+        this.populate();
         bookingDetailService.deleteBookingDetail(-1);
     }
 
     @Test
     public void updateBookingDetailTest() {
+        this.populate();
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
         bookingDetail.setDescription("test");
         BookingDetail b = bookingDetailService.updateBookingDetail(bookingDetail);
         assertNotNull(b);
         assertEquals("test", b.getDescription());
     }
 
+    @Before
     @After
     public void clear() {
         bookingDetailService.deleteAll();

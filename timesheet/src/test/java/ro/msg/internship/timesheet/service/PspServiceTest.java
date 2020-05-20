@@ -11,10 +11,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ro.msg.internship.timesheet.exception.PspNotFoundException;
-import ro.msg.internship.timesheet.model.*;
+import ro.msg.internship.timesheet.model.Program;
+import ro.msg.internship.timesheet.model.Psp;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,8 +33,7 @@ public class PspServiceTest {
     private Program program;
     private Psp psp;
 
-    @Before
-    public void init() {
+    public void populate() {
         program = new Program();
         program.setName("Summer School 2019");
         program.setStartDate(LocalDate.of(2019, 7, 15));
@@ -50,6 +49,7 @@ public class PspServiceTest {
 
     @Test
     public void createPspTest() {
+        this.populate();
         Assert.assertEquals(0, pspService.getPsps().size());
 
         Psp createdPsp = pspService.createPsp(psp);
@@ -61,6 +61,7 @@ public class PspServiceTest {
 
     @Test
     public void getPspByIdTest() {
+        this.populate();
         psp = pspService.createPsp(psp);
 
         // Given
@@ -76,11 +77,13 @@ public class PspServiceTest {
 
     @Test(expected = PspNotFoundException.class)
     public void getPspByIdTestFail() {
+        this.populate();
         pspService.getPspById(2);
     }
 
     @Test
     public void getPspsTest() {
+        this.populate();
         Assert.assertEquals(0, pspService.getPsps().size());
 
         pspService.createPsp(psp);
@@ -94,6 +97,7 @@ public class PspServiceTest {
 
     @Test
     public void deleteAllTest() {
+        this.populate();
         Assert.assertEquals(0, pspService.getPsps().size());
 
         pspService.createPsp(psp);
@@ -106,6 +110,7 @@ public class PspServiceTest {
 
     @Test
     public void updatePspTest() {
+        this.populate();
         Psp createdPsp = pspService.createPsp(psp);
         createdPsp.setName("Updated Psp Name");
 
@@ -115,6 +120,7 @@ public class PspServiceTest {
 
     @Test
     public void deletePspById() {
+        this.populate();
         Assert.assertEquals(0, pspService.getPsps().size());
 
         Psp createdPsp = pspService.createPsp(psp);
@@ -126,6 +132,7 @@ public class PspServiceTest {
         Assert.assertEquals(1, pspService.getPsps().size());
     }
 
+    @Before
     @After
     public void clear() {
         pspService.deleteAll();

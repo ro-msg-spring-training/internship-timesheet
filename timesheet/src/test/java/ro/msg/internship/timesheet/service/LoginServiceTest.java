@@ -24,31 +24,14 @@ class LoginServiceTest {
     private LoginService loginService;
 
     @Test
-    void passTest() {
-        User userEncode = User.builder().userId(1).username("a").build();
-        String password = new BCryptPasswordEncoder().encode("a");
-        userEncode.setPassword(password);
-
-        User user = User.builder().userId(1).username("a").password("a").build();
-        when(userRepository.findUserByUsername("a")).thenReturn(java.util.Optional.ofNullable(userEncode));
-
-        User loggedUser = loginService.loginUser(user);
-        assertNotNull(loggedUser);
-        assertEquals(userEncode, loggedUser);
-    }
-
-    @Test
     void userNotFoundTest() {
-        User user = User.builder().userId(1).build();
+        User user = User.builder().userId(1).password("random").build();
         assertThrows(UserNotFoundException.class, () -> {loginService.loginUser(user);});
     }
 
     @Test
     void passwordIncorectTest() {
-        User userEncode = User.builder().userId(1).username("a").build();
-        String password = new BCryptPasswordEncoder().encode("a");
-        userEncode.setPassword(password);
-
+        User userEncode = User.builder().userId(1).username("a").password("a").build();
         User user = User.builder().userId(1).username("a").password("b").build();
         when(userRepository.findUserByUsername("a")).thenReturn(java.util.Optional.ofNullable(userEncode));
 

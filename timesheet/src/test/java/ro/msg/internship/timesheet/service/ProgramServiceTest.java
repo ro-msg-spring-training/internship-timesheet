@@ -29,8 +29,8 @@ public class ProgramServiceTest {
     private ProgramService programService;
     private Program program;
 
-    @Before
-    public void init() {
+    //@Before
+    public void populate() {
         program = new Program();
         program.setName("Summer School 2019");
         program.setStartDate(LocalDate.of(2019, 7, 15));
@@ -40,6 +40,7 @@ public class ProgramServiceTest {
 
     @Test
     public void createProgramTest() {
+        this.populate();
         Assert.assertEquals(0, programService.getPrograms().size());
 
         Program createdProgram = programService.createProgram(program);
@@ -53,6 +54,7 @@ public class ProgramServiceTest {
 
     @Test
     public void getProgramByIdTest() {
+        this.populate();
         Program createdProgram = programService.createProgram(program);
 
         Assert.assertEquals(programService.getProgramById(programService
@@ -61,11 +63,13 @@ public class ProgramServiceTest {
 
     @Test(expected = ProgramNotFoundException.class)
     public void getProgramByIdTestFail() {
+        this.populate();
         programService.getProgramById(-1);
     }
 
     @Test
     public void getProgramsTest() {
+        this.populate();
         Assert.assertEquals(0, programService.getPrograms().size());
 
         programService.createProgram(program);
@@ -82,6 +86,7 @@ public class ProgramServiceTest {
 
     @Test
     public void deleteAllTest() {
+        this.populate();
         Assert.assertEquals(0, programService.getPrograms().size());
 
         programService.createProgram(program);
@@ -97,6 +102,7 @@ public class ProgramServiceTest {
 
     @Test
     public void getProgramByNameTest() {
+        this.populate();
         programService.createProgram(program);
 
         Assert.assertEquals(program.getName(), programService.getProgramByName(program.getName()).getName());
@@ -104,6 +110,7 @@ public class ProgramServiceTest {
 
     @Test
     public void getPspsByNameTest() {
+        this.populate();
         Program createdProgram = programService.createProgram(program);
         pspService.createPsp(new Psp(null, "Test Psp 1", createdProgram));
         pspService.createPsp(new Psp(null, "Test Psp 2", createdProgram));
@@ -115,6 +122,7 @@ public class ProgramServiceTest {
 
     @Test
     public void updateProgramTest() {
+        this.populate();
         Program createdProgram = programService.createProgram(program);
         createdProgram.setName("Updated Program Name");
         createdProgram.setWorkingHours(4.0);
@@ -126,6 +134,7 @@ public class ProgramServiceTest {
 
     @Test
     public void deleteProgramByIdTest() {
+        this.populate();
         Assert.assertEquals(0, programService.getPrograms().size());
 
         Program createdProgram = programService.createProgram(program);
@@ -140,6 +149,7 @@ public class ProgramServiceTest {
         Assert.assertEquals(createdProgram.getProgramId(), deletedProgram.getProgramId());
     }
 
+    @Before
     @After
     public void clear() {
         pspService.deleteAll();

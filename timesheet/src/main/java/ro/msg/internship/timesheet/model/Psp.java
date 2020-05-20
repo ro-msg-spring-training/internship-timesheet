@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "Psp")
-@Table(name = "psp", schema = "timesheet")
+@Table(name = "psp")
 
 @Getter
 @Setter

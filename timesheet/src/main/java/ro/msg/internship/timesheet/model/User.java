@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name = "User")
-@Table(name = "users", schema = "timesheet")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -41,9 +41,8 @@ public class User {
     @Enumerated
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("programId")
-    @JoinColumn(name = "program_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "program_id", referencedColumnName = "program_id")
     private Program program;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -61,7 +60,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        //this.password = PASSWORD_ENCODER.encode(password);
-        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
+        //this.password = password;
     }
 }

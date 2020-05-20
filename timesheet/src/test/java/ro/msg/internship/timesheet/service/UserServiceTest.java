@@ -27,14 +27,12 @@ public class UserServiceTest {
     private UserRepository userRepository;
     private User user = new User();
 
-    @Before
-    public void init() {
+    public void populate() {
         user.setFirstName("Emanuela");
         user.setLastName("Ionas");
-        user.setUsername("iema");
+        user.setUsername("iema1");
         user.setPassword("iema");
         user.setRole(Role.USER);
-        user.setUserId(1);
 
         user = userRepository.save(user);
     }
@@ -42,16 +40,19 @@ public class UserServiceTest {
     @Test
     public void testFindByIdSuccess() {
 
+        this.populate();
+        System.out.println(userRepository.findAll());
+
         UserService userService = new UserService(userRepository);
 
         user = userService.findUserById(user.getUserId());
 
-        Assertions.assertEquals("iema", user.getUsername());
+        Assertions.assertEquals("iema1", user.getUsername());
     }
 
     @Test
     public void findByIdFail() {
-
+        this.populate();
         UserService userService = new UserService(userRepository);
 
         Assertions.assertThrows(RuntimeException.class, () -> userService.findUserById(10));
@@ -59,7 +60,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsers() {
-
+        this.populate();
         UserService userService = new UserService(userRepository);
 
         List<User> users = userService.getUsers();
@@ -70,17 +71,17 @@ public class UserServiceTest {
 
     @Test
     public void testFindByUsernameSuccess() {
-
+        this.populate();
         UserService userService = new UserService(userRepository);
 
-        User user = userService.findByUsername("iema");
+        User user = userService.findByUsername("iema1");
 
         Assertions.assertEquals(userRepository.findAll().get(0).getUserId(), user.getUserId());
     }
 
     @Test(expected = UserNotFoundException.class)
     public void testFindByUsernameFail() {
-
+        this.populate();
         UserService userService = new UserService(userRepository);
 
         User user = userService.findByUsername("iemma");
@@ -88,6 +89,19 @@ public class UserServiceTest {
         Assertions.assertNull(user);
     }
 
+    @Test
+    public void testCreateUserSuccess(){
+        user.setFirstName("Emanuela");
+        user.setLastName("Ionas");
+        user.setUsername("iema1");
+        user.setPassword("iema");
+        user.setRole(Role.USER);
+
+        User localUser = userRepository.save(user);
+        Assertions.assertEquals(localUser.getFirstName(), user.getFirstName());
+    }
+
+    @Before
     @After
     public void clear() {
         userRepository.deleteAll();
