@@ -44,11 +44,11 @@ public class FormSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors()
                 .configurationSource(corsConfigurationSource()).and()
                 .authorizeRequests()
-                .antMatchers("/loginUser").permitAll()
+                .antMatchers("/login").permitAll()
                 .and()
             .formLogin()
-                .loginProcessingUrl("/loginUser")
-                .loginPage("/loginUser").permitAll()
+                .loginProcessingUrl("/login")
+                .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/users");
     }
 

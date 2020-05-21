@@ -17,7 +17,12 @@ public class LoginController {
 
     @RequestMapping(value = "/loginUser", method = RequestMethod.POST)
     public ResponseEntity<UserDto> loginUser(@RequestBody UserDto user) {
+
+        System.out.println("controller: " + user);
+
         User loggedUser = loginService.loginUser(UserBuilder.getUserFromDto(user));
+
+        System.out.println("logged: " + user);
 
         return ResponseEntity.ok(UserBuilder.getDtoFromUser(loggedUser));
     }
@@ -25,7 +30,7 @@ public class LoginController {
     @PostMapping(value = "/adminLogin", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})
     public ResponseEntity<UserDto> loginAdmin(@ModelAttribute UserDto user) {
-        User loggedUser = loginService.loginAdmin(UserBuilder.getUserFromDto(user));
+        User loggedUser = loginService.loginAdmin(user.getUsername(), user.getPassword());
         return ResponseEntity.ok(UserBuilder.getDtoFromUser(loggedUser));
     }
 }
