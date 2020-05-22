@@ -2,6 +2,8 @@ package ro.msg.internship.timesheet.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.msg.internship.timesheet.exception.FirstNameUserException;
+import ro.msg.internship.timesheet.exception.LastNameUserException;
 import ro.msg.internship.timesheet.exception.UserNotFoundException;
 import ro.msg.internship.timesheet.exception.UsernameFoundException;
 import ro.msg.internship.timesheet.model.User;
@@ -32,7 +34,13 @@ public class UserService {
         return userRepository.findUserByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
     }
 
-    public User createUser(User user) {
+    public User createUser(User user){
+        if (!user.getFirstName().matches("^[A-Za-z]+$")) {
+            throw new FirstNameUserException("FirstName Has to contain only letters");
+        }
+        if (!user.getLastName().matches("^[A-Za-z]+$")) {
+            throw new LastNameUserException("LastName Has to contain only letters");
+        }
         Optional<User> checkedUser = userRepository.findUserByUsername(user.getUsername());
         if (!checkedUser.isPresent())
             return userRepository.save(user);
