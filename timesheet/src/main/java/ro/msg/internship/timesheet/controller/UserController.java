@@ -49,7 +49,7 @@ public class UserController {
 
     @PostMapping(value = "/createUser", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})
-    public ResponseEntity<UserDto> createUser(@ModelAttribute UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@ModelAttribute UserDto userDto) {
         Program program = programService.getProgramByName(userDto.getProgramName());
         User user = UserBuilder.getUserFromDto(userDto);
         user.setProgram(program);
