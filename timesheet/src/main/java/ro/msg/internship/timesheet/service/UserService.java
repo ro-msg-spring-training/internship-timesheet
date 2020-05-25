@@ -35,11 +35,11 @@ public class UserService {
     }
 
     public User createUser(User user){
-        if (!user.getFirstName().matches("^[A-Za-z]+$")) {
-            throw new FirstNameUserException("FirstName Has to contain only letters");
+        if (!user.getFirstName().matches("'^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$'")) {
+            throw new FirstNameUserException("FirstName Has to contain only letters or one space and ' or -");
         }
-        if (!user.getLastName().matches("^[A-Za-z]+$")) {
-            throw new LastNameUserException("LastName Has to contain only letters");
+        if (!user.getLastName().matches("'^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$'")) {
+            throw new LastNameUserException("LastName Has to contain only letters or one space and ' or -");
         }
         Optional<User> checkedUser = userRepository.findUserByUsername(user.getUsername());
         if (!checkedUser.isPresent())
