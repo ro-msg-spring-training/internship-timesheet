@@ -3,17 +3,25 @@ package ro.msg.internship.timesheet.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.msg.internship.timesheet.dto.ProgramCreateDto;
 import ro.msg.internship.timesheet.dto.ProgramDto;
 import ro.msg.internship.timesheet.dto.PspDto;
 import ro.msg.internship.timesheet.dto.UserDto;
 import ro.msg.internship.timesheet.dto.builder.ProgramBuilder;
+import ro.msg.internship.timesheet.dto.builder.ProgramCreateBuilder;
 import ro.msg.internship.timesheet.dto.builder.PspBuilder;
 import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.Program;
+import ro.msg.internship.timesheet.model.Psp;
+import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.service.ProgramService;
+import ro.msg.internship.timesheet.service.PspService;
+import ro.msg.internship.timesheet.service.UserService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -21,6 +29,8 @@ import java.util.List;
 public class ProgramController {
 
     private final ProgramService programService;
+    private final PspService pspService;
+    private final UserService userService;
 
     @GetMapping("/programs/{programName}/psps")
     public ResponseEntity<List<PspDto>> getPsps(@PathVariable String programName) {
@@ -48,11 +58,31 @@ public class ProgramController {
         return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(programService.getProgramById(programId)));
     }
 
-    @PostMapping("/programs")
-    public ResponseEntity<ProgramDto> createProgram(@RequestBody ProgramDto programDto) {
-        Program createdProgram = programService.createProgram(ProgramBuilder.getEntityFromDto(programDto));
+    @Transactional
+    @PostMapping(value = "/programs", consumes = "multipart/form-data",
+            produces = {"application/json", "application/xml"})
+    public ResponseEntity<ProgramDto> createProgram(@ModelAttribute ProgramCreateDto programCreateDto) {
+        System.out.println(programCreateDto);
+        Program program = ProgramCreateBuilder.getEntityFromDto(programCreateDto);
+        Set<Psp> psps = program.getPsps();
+        Set<User> users = program.getUsers();
+        Program createdProgram = programService.createProgram(program);
+
+        for(Psp psp : psps) {
+            psp.setProgram(createdProgram);
+        }
+        pspService.createAll(psps);
+        createdProgram.setPsps(psps);
+
+        for(User user : users){
+            user.setProgram(createdProgram);
+        }
+        userService.createAll(users);
+        createdProgram.setUsers(users);
+
         return ResponseEntity.accepted().body(ProgramBuilder.getDtoFromEntity(createdProgram));
     }
+
 
     @PutMapping("/programs")
     public ResponseEntity<ProgramDto> updateProgram(@RequestBody ProgramDto programDto) {
