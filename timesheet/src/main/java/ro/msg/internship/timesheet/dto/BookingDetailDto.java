@@ -16,7 +16,7 @@ public class BookingDetailDto {
     private String status;
     private double hours;
     private String pspName;
-    private String date;
+    private String day;
     private Integer bookingId;
     private Integer pspId;
     private Integer userId;

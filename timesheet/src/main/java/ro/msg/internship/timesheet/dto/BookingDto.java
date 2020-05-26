@@ -19,8 +19,8 @@ public class BookingDto {
 
 	private Integer bookingId;
 	private LocalDate day;
-	private LocalTime startHour;
-    private LocalTime endHour;
+	private String startHour;
+    private String endHour;
     private double hours;
     private List<BookingDetailDto> bookingDetails;
 	

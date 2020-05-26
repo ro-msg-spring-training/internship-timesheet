@@ -1,16 +1,17 @@
 package ro.msg.internship.timesheet.dto.builder;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import ro.msg.internship.timesheet.dto.BookingDetailDto;
 import ro.msg.internship.timesheet.dto.BookingDto;
 import ro.msg.internship.timesheet.model.Booking;
 import ro.msg.internship.timesheet.model.BookingDetail;
+
+import java.text.DecimalFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class BookingBuilder {
 
@@ -36,7 +37,7 @@ public class BookingBuilder {
 		return bookingDetails;
 	}
 	
-	private static LocalTime getStartHour(Booking booking) {
+	private static String getStartHour(Booking booking) {
 		LocalTime startHour = LocalTime.of(20, 0);
 		
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
@@ -44,11 +45,11 @@ public class BookingBuilder {
 				startHour = bookingDetail.getStartHour();
 			}
 		}
-		
-		return startHour;
+
+		return LocalTime.parse(startHour.toString(), DateTimeFormatter.ofPattern("HH:mm")).toString();
 	}
 	
-	private static LocalTime getEndHour(Booking booking) {
+	private static String getEndHour(Booking booking) {
 		LocalTime endHour = LocalTime.of(8, 0);
 		
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
@@ -57,17 +58,18 @@ public class BookingBuilder {
 			}
 		}
 		
-		return endHour;
+		return LocalTime.parse(endHour.toString(), DateTimeFormatter.ofPattern("HH:mm")).toString();
 	}
 	
 	private static double getHours(Booking booking) {
 		double hours = 0;
+		DecimalFormat decimalFormat = new DecimalFormat("0.00");
 		
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
 			hours += MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0;
 		}
-		
-		return hours;
+
+		return Double.parseDouble(decimalFormat.format(hours));
 	}
 
 }

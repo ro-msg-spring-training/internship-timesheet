@@ -26,7 +26,7 @@ public class BookingDetailController {
     public ResponseEntity<BookingDetailDto> createBookingDetail(@ModelAttribute BookingDetailDto bookingDetailDto) {
         BookingDetail bookingDetail = BookingDetailBuilder.getEntityFromDto(bookingDetailDto);
         bookingDetail.setPsp(pspService.getPspById(bookingDetailDto.getPspId()));
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, LocalDate.parse(bookingDetailDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), bookingDetailDto.getUserId());
+        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, LocalDate.parse(bookingDetailDto.getDay(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), bookingDetailDto.getUserId());
         if(bookingDetail==null) return ResponseEntity.unprocessableEntity().body(null);
 
         BookingDetailDto bookingDetailDtoConverted = BookingDetailBuilder.getDtoFromEntity(bookingDetail);

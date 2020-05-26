@@ -60,7 +60,6 @@ public class User {
     }
 
     public void setPassword(String password) {
-//        this.password = PASSWORD_ENCODER.encode(password);
-        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
     }
 }
