@@ -3,6 +3,8 @@ package ro.msg.internship.timesheet.controller;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.internship.timesheet.dto.LoginDto;
 import ro.msg.internship.timesheet.dto.UserDto;
@@ -34,18 +36,6 @@ public class UserController {
         }
         return ResponseEntity.accepted().body(userDtos);
     }
-
-/*    @RequestMapping(value = "/users", consumes = "multipart/form-data",
-            produces = {"application/json", "application/xml"}, method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<List<UserDto>> getUsers(@ModelAttribute LoginDto loginDto) {
-        List<User> users = loginService.login(User.builder().username(loginDto.getUsername()).password(loginDto.getPassword()).build(),
-                loginDto.getAppType());
-        List<UserDto> userDtos = new ArrayList<>();
-        for (User u : users) {
-            userDtos.add(UserBuilder.getDtoFromUser(u));
-        }
-        return ResponseEntity.accepted().body(userDtos);
-    }*/
 
     @PostMapping(value = "/createUser", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})

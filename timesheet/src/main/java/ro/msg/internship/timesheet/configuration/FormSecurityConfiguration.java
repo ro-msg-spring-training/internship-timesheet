@@ -11,7 +11,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ro.msg.internship.timesheet.model.User;
-import ro.msg.internship.timesheet.service.UserDetailService;
+import ro.msg.internship.timesheet.security.UserDetailService;
 
 import java.util.Arrays;
 import java.util.Collections;

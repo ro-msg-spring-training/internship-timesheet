@@ -15,15 +15,15 @@ public class UserBuilder {
                 .id(user.getUserId())
                 .password(user.getPassword())
                 .username(user.getUsername())
-                .role(user.getRole().name())
+                .role(user.getRole())
                 .build();
     }
 
     public static User getUserFromDto(UserDto userDto) {
-        Role role = Role.USER;
+        /*Role role = Role.USER;
         if (!(userDto.getRole() == null)) {
             role = Role.valueOf(userDto.getRole().toUpperCase());
-        }
+        }*/
         return User.builder()
                 .userId(userDto.getId())
                 .firstName(userDto.getFirstName())
@@ -32,7 +32,7 @@ public class UserBuilder {
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
                 .bookings(null)
-                .role(role)
+                .role("USER")
                 .build();
     }
 }

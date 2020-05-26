@@ -1,6 +1,8 @@
 package ro.msg.internship.timesheet.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ro.msg.internship.timesheet.exception.FirstNameUserException;
 import ro.msg.internship.timesheet.exception.LastNameUserException;
@@ -10,6 +12,7 @@ import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

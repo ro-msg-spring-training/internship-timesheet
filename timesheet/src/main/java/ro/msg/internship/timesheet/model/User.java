@@ -38,8 +38,8 @@ public class User {
     private String password;
 
     @Column(name = "role", nullable = false, columnDefinition = "int")
-    @Enumerated
-    private Role role;
+    //@Enumerated
+    private String role;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "program_id", referencedColumnName = "program_id")
@@ -48,7 +48,7 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Booking> bookings;
 
-    public User(Integer userId, String firstName, String lastName, String username, String password, Role role, Program program, Set<Booking> bookings) {
+    public User(Integer userId, String firstName, String lastName, String username, String password, String role, Program program, Set<Booking> bookings) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,7 +60,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-//        this.password = PASSWORD_ENCODER.encode(password);
-        this.password = password;
+        this.password = PASSWORD_ENCODER.encode(password);
+        //this.password = password;
     }
 }
