@@ -13,6 +13,7 @@ import ro.msg.internship.timesheet.dto.builder.PspBuilder;
 import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.model.Psp;
+import ro.msg.internship.timesheet.model.Role;
 import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.service.ProgramService;
 import ro.msg.internship.timesheet.service.PspService;
@@ -62,7 +63,6 @@ public class ProgramController {
     @PostMapping(value = "/programs", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})
     public ResponseEntity<ProgramDto> createProgram(@ModelAttribute ProgramCreateDto programCreateDto) {
-        System.out.println(programCreateDto);
         Program program = ProgramCreateBuilder.getEntityFromDto(programCreateDto);
         Set<Psp> psps = program.getPsps();
         Set<User> users = program.getUsers();
@@ -76,6 +76,7 @@ public class ProgramController {
 
         for(User user : users){
             user.setProgram(createdProgram);
+            user.setRole(Role.USER);
         }
         userService.createAll(users);
         createdProgram.setUsers(users);
