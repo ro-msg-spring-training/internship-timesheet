@@ -1,5 +1,6 @@
 package ro.msg.internship.timesheet.security;
 
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +17,7 @@ import java.util.List;
 public class UserDetail implements UserDetails, Serializable {
     private User user;
 
-    public UserDetail(User user){
+    public UserDetail(User user) {
         this.user = user;
     }
 
@@ -25,9 +26,11 @@ public class UserDetail implements UserDetails, Serializable {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         // Extract list of roles (ROLE_name)
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+user.getRole());
         authorities.add(authority);
 
+        AbstractAuthenticationToken auth = (AbstractAuthenticationToken)
+                SecurityContextHolder.getContext().getAuthentication();
         return authorities;
     }
 

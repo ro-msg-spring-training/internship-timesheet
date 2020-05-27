@@ -7,11 +7,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ro.msg.internship.timesheet.model.User;
-import ro.msg.internship.timesheet.security.UserDetailService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import java.util.Collections;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class FormSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final UserDetailService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -31,7 +32,7 @@ public class FormSecurityConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -46,10 +47,15 @@ public class FormSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .and()
-            .formLogin()
+                .formLogin()
                 .loginProcessingUrl("/login")
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/users");
+                .defaultSuccessUrl("/users/{username}")
+                .and()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/defaultLogout")
+                .invalidateHttpSession(true)        // set invalidation state when logout
+                .deleteCookies("JSESSIONID");
     }
 
 }

@@ -1,12 +1,8 @@
 package ro.msg.internship.timesheet.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ro.msg.internship.timesheet.dto.LoginDto;
 import ro.msg.internship.timesheet.dto.UserDto;
 import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.Program;
@@ -27,12 +23,17 @@ public class UserController {
     private final ProgramService programService;
     private final LoginService loginService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<User> users = userService.getUsers();
+    @GetMapping("/users/{username}")
+    public ResponseEntity<List<UserDto>> getUsers(@PathVariable String username) {
+        User user = userService.findByUsername(username);
         List<UserDto> userDtos = new ArrayList<>();
-        for (User u : users) {
-            userDtos.add(UserBuilder.getDtoFromUser(u));
+        if (user.getRole().equals("ADMIN")) {
+            List<User> users = userService.getUsers();
+            for (User u : users) {
+                userDtos.add(UserBuilder.getDtoFromUser(u));
+            }
+        } else {
+            userDtos.add(UserBuilder.getDtoFromUser(user));
         }
         return ResponseEntity.accepted().body(userDtos);
     }

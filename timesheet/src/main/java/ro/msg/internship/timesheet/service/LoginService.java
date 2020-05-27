@@ -59,7 +59,7 @@ public class LoginService {
         return null;
     }
 
-    public List<User> loginUser(String username, String password, int appType) {
+    public List<User> loginUser(String username, String password) {
         User loggedUser = userRepository.findUserByUsername(username).orElse(null);
 
         if(loggedUser == null) {
@@ -71,21 +71,7 @@ public class LoginService {
         }
 
         //pentru aplicatia adminului
-        /*if(appType == 1 && loggedUser.getRole().name().equals("USER")) {
-            throw new AccessDeniedException();
-        }
-        if(appType == 0 && loggedUser.getRole().name().equals("ADMIN")) {
-                return userRepository.findAll();
-        }
-        else {
-            List<User> users = new ArrayList<>();
-            users.add(loggedUser);
-            return users;
-        }*/
-        if(appType == 1 && loggedUser.getRole().equals("USER")) {
-            throw new AccessDeniedException();
-        }
-        if(appType == 0 && loggedUser.getRole().equals("ADMIN")) {
+        if(loggedUser.getRole().equals("ADMIN")) {
             return userRepository.findAll();
         }
         else {
