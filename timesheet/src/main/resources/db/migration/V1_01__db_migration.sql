@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_name varchar(255),
     username varchar(255) UNIQUE,
     password varchar(255),
-    role int,
+    role varchar(255),
     program_id int references programs (program_id)
 );
 

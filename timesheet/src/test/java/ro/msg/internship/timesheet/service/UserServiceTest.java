@@ -32,7 +32,7 @@ public class UserServiceTest {
         user.setLastName("Ionas");
         user.setUsername("iema1");
         user.setPassword("iema");
-        user.setRole(Role.USER);
+        user.setRole("USER");
 
         user = userRepository.save(user);
     }
@@ -95,7 +95,7 @@ public class UserServiceTest {
         user.setLastName("Ionas");
         user.setUsername("iema1");
         user.setPassword("iema");
-        user.setRole(Role.USER);
+        user.setRole("USER");
 
         User localUser = userRepository.save(user);
         Assertions.assertEquals(localUser.getFirstName(), user.getFirstName());

@@ -31,7 +31,7 @@ public class LoginService {
             throw new PasswordNotMatchedException();
         }
 
-        /*ca sa nu folosim dependintele de securitate (pentru testare)*/
+       // ca sa nu folosim dependintele de securitate (pentru testare)
 //        if(!loggedUser.getPassword().equals(user.getPassword())) {
 //            throw new PasswordNotMatchedException();
 //        }
@@ -52,31 +52,27 @@ public class LoginService {
             throw new PasswordNotMatchedException();
         }
 
-        if(loggedUser.getRole().name().equals("ADMIN")) {
+        if(loggedUser.getRole().equals("ADMIN")) {
             return loggedUser;
         }
 
         return null;
     }
 
-    public List<User> login(User user, int appType) {
-        User loggedUser = userRepository.findUserByUsername(user.getUsername()).orElse(null);
+    public List<User> loginUser(String username, String password) {
+        User loggedUser = userRepository.findUserByUsername(username).orElse(null);
 
         if(loggedUser == null) {
-            throw new UserNotFoundException(user.getUsername());
+            throw new UserNotFoundException(username);
         }
 
-        if(!User.PASSWORD_ENCODER.matches(user.getPassword(), loggedUser.getPassword())){
+        if(!User.PASSWORD_ENCODER.matches(password, loggedUser.getPassword())){
             throw new PasswordNotMatchedException();
         }
 
         //pentru aplicatia adminului
-        if(appType == 1 && loggedUser.getRole().name().equals("USER")) {
-            throw new AccessDeniedException();
-        }
-        if(appType == 0 && loggedUser.getRole().name().equals("ADMIN")) {
-            List<User> users = userRepository.findAll();
-            return users;
+        if(loggedUser.getRole().equals("ADMIN")) {
+            return userRepository.findAll();
         }
         else {
             List<User> users = new ArrayList<>();

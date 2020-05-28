@@ -76,7 +76,7 @@ public class ProgramController {
 
         for(User user : users){
             user.setProgram(createdProgram);
-            user.setRole(Role.USER);
+            user.setRole("USER");
         }
         userService.createAll(users);
         createdProgram.setUsers(users);

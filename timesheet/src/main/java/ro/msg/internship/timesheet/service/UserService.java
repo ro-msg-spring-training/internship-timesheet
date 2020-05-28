@@ -22,8 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User findUserById(Integer id){
-        return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
+    public User findUserById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Transactional
@@ -32,15 +32,15 @@ public class UserService {
     }
 
     @Transactional
-    public User findByUsername(String username){
-        return userRepository.findUserByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+    public User findByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
-    public User createUser(User user){
-        if (!user.getFirstName().matches("^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$")) {
+    public User createUser(User user) {
+        if (!"^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$".matches(user.getFirstName())) {
             throw new FirstNameUserException("FirstName Has to contain only letters or one space and ' or -");
         }
-        if (!user.getLastName().matches("^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$")) {
+        if (!"^[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*$".matches(user.getLastName())) {
             throw new LastNameUserException("LastName Has to contain only letters or one space and ' or -");
         }
         Optional<User> checkedUser = userRepository.findUserByUsername(user.getUsername());
@@ -49,15 +49,15 @@ public class UserService {
         throw new UsernameFoundException(user.getUsername());
     }
 
-    public List<User> createAll (Set<User> users){
+    public List<User> createAll(Set<User> users) {
         List<User> output = new ArrayList<>();
-        for(User user: users){
+        for (User user : users) {
             output.add(createUser(user));
         }
         return output;
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         userRepository.deleteAll();
     }
 }

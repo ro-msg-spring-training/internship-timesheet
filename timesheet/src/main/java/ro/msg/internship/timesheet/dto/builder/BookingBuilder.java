@@ -64,7 +64,7 @@ public class BookingBuilder {
 	private static double getHours(Booking booking) {
 		double hours = 0;
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
-		
+
 		for(BookingDetail bookingDetail : booking.getBookingDetails()) {
 			hours += MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0;
 		}

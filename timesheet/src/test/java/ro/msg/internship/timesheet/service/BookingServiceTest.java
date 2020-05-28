@@ -51,7 +51,7 @@ public class BookingServiceTest {
         user.setLastName("Truta");
         user.setUsername("tpatricia");
         user.setPassword("tpatricia");
-        user.setRole(Role.USER);
+        user.setRole("USER");
         user.setProgram(program);
         user.setUserId(1);
 

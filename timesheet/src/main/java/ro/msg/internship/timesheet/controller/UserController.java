@@ -1,10 +1,8 @@
 package ro.msg.internship.timesheet.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.msg.internship.timesheet.dto.LoginDto;
 import ro.msg.internship.timesheet.dto.UserDto;
 import ro.msg.internship.timesheet.dto.builder.UserBuilder;
 import ro.msg.internship.timesheet.model.Program;
@@ -25,27 +23,20 @@ public class UserController {
     private final ProgramService programService;
     private final LoginService loginService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<User> users = userService.getUsers();
+    @GetMapping("/users/{username}")
+    public ResponseEntity<List<UserDto>> getUsers(@PathVariable String username) {
+        User user = userService.findByUsername(username);
         List<UserDto> userDtos = new ArrayList<>();
-        for (User u : users) {
-            userDtos.add(UserBuilder.getDtoFromUser(u));
+        if (user.getRole().equals("ADMIN")) {
+            List<User> users = userService.getUsers();
+            for (User u : users) {
+                userDtos.add(UserBuilder.getDtoFromUser(u));
+            }
+        } else {
+            userDtos.add(UserBuilder.getDtoFromUser(user));
         }
         return ResponseEntity.accepted().body(userDtos);
     }
-
-/*    @RequestMapping(value = "/users", consumes = "multipart/form-data",
-            produces = {"application/json", "application/xml"}, method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<List<UserDto>> getUsers(@ModelAttribute LoginDto loginDto) {
-        List<User> users = loginService.login(User.builder().username(loginDto.getUsername()).password(loginDto.getPassword()).build(),
-                loginDto.getAppType());
-        List<UserDto> userDtos = new ArrayList<>();
-        for (User u : users) {
-            userDtos.add(UserBuilder.getDtoFromUser(u));
-        }
-        return ResponseEntity.accepted().body(userDtos);
-    }*/
 
     @PostMapping(value = "/createUser", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})
