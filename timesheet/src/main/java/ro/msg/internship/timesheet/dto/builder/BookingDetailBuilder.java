@@ -4,6 +4,7 @@ import ro.msg.internship.timesheet.dto.BookingDetailDto;
 import ro.msg.internship.timesheet.model.BookingDetail;
 import ro.msg.internship.timesheet.model.Status;
 
+import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,7 +20,7 @@ public class BookingDetailBuilder {
                 .hours(getHour(bookingDetail))
                 .startHour(bookingDetail.getStartHour().toString())
                 .status(bookingDetail.getStatus().toString())
-                .date(bookingDetail.getBooking().getDay().toString())
+                .day(bookingDetail.getBooking().getDay().toString())
                 .bookingId(bookingDetail.getBooking().getBookingId())
                 .userId(bookingDetail.getBooking().getUser().getUserId())
                 .pspId(bookingDetail.getPsp().getPspId())
@@ -38,6 +39,7 @@ public class BookingDetailBuilder {
     }
 
     private static double getHour(BookingDetail bookingDetail) {
-        return MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0;
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        return Double.valueOf(decimalFormat.format(MINUTES.between(bookingDetail.getStartHour(), bookingDetail.getEndHour()) / 60.0));
     }
 }

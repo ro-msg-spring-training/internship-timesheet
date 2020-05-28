@@ -8,6 +8,7 @@ import ro.msg.internship.timesheet.repository.PspRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,10 @@ public class PspService {
 
     public Psp createPsp(Psp psp) {
         return pspRepository.save(psp);
+    }
+
+    public List<Psp> createAll(Set<Psp> psps){
+        return pspRepository.saveAll(psps);
     }
 
     public List<Psp> getPsps() {
