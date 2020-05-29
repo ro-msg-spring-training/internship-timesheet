@@ -1,4 +1,4 @@
-package ro.msg.internship.timesheet.service;
+package ro.msg.internship.timesheet.service.integration;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ro.msg.internship.timesheet.exception.ProgramNotFoundException;
 import ro.msg.internship.timesheet.model.*;
+import ro.msg.internship.timesheet.service.ProgramService;
+import ro.msg.internship.timesheet.service.PspService;
 
 import java.time.LocalDate;
 import java.util.HashSet;

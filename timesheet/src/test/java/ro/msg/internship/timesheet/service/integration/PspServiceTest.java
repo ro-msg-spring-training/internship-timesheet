@@ -1,4 +1,4 @@
-package ro.msg.internship.timesheet.service;
+package ro.msg.internship.timesheet.service.integration;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ro.msg.internship.timesheet.exception.PspNotFoundException;
 import ro.msg.internship.timesheet.model.Program;
 import ro.msg.internship.timesheet.model.Psp;
+import ro.msg.internship.timesheet.service.ProgramService;
+import ro.msg.internship.timesheet.service.PspService;
 
 import java.time.LocalDate;
 import java.util.List;

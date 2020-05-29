@@ -1,4 +1,4 @@
-package ro.msg.internship.timesheet.service;
+package ro.msg.internship.timesheet.service.integration;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,6 +14,7 @@ import ro.msg.internship.timesheet.exception.UserNotFoundException;
 import ro.msg.internship.timesheet.model.Role;
 import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.UserRepository;
+import ro.msg.internship.timesheet.service.UserService;
 
 import java.util.List;
 

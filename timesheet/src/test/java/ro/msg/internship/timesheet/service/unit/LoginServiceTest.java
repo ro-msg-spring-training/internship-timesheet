@@ -1,4 +1,4 @@
-package ro.msg.internship.timesheet.service;
+package ro.msg.internship.timesheet.service.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +10,7 @@ import ro.msg.internship.timesheet.exception.PasswordNotMatchedException;
 import ro.msg.internship.timesheet.exception.UserNotFoundException;
 import ro.msg.internship.timesheet.model.User;
 import ro.msg.internship.timesheet.repository.UserRepository;
+import ro.msg.internship.timesheet.service.LoginService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

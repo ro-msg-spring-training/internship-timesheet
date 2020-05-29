@@ -1,4 +1,4 @@
-package ro.msg.internship.timesheet.service;
+package ro.msg.internship.timesheet.service.integration;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,20 +9,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import ro.msg.internship.timesheet.exception.BookingDetailNotFoundException;
+import ro.msg.internship.timesheet.exception.BookingNotFoundException;
 import ro.msg.internship.timesheet.model.*;
+import ro.msg.internship.timesheet.service.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class BookingDetailServiceTest {
+public class BookingServiceTest {
     @Autowired
     private PspService pspService;
     @Autowired
@@ -82,37 +82,35 @@ public class BookingDetailServiceTest {
     }
 
     @Test
-    public void createBookingDetailTest() {
+    public void getOrCreateBookingTest() {
         this.populate();
-        BookingDetail detail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
-        assertEquals(detail.getEndHour(), bookingDetail.getEndHour());
+        Booking b = bookingService.getOrCreateBooking(bookingService.getBookingById(bookingService
+                    .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId()));
+        System.out.println(b.toString());
+        assertEquals(bookingService.getOrCreateBooking(bookingService.getBookingById(bookingService
+                .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId()))
+                .getDay(),booking.getDay());
     }
 
     @Test
-    public void deleteBookingDetailTest() {
+    public void getBookingByIdTest() {
         this.populate();
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
-        assertEquals(bookingDetailService
-                .deleteBookingDetail(bookingDetailService
-                        .getBookingDetailsById(bookingDetailService
-                                .getBookingDetails().get(0).getBookingDetailId()).getBookingDetailId())
-                .getEndHour(), bookingDetail.getEndHour());
-    }
-
-    @Test(expected = BookingDetailNotFoundException.class)
-    public void deleteBookingDetailFailTest() {
-        this.populate();
-        bookingDetailService.deleteBookingDetail(-1);
+        assertEquals(bookingService.getBookingById(bookingService
+                .getBookingsByUserId(userService.getUsers().get(0).getUserId()).get(0).getBookingId())
+                .getDay(),booking.getDay());
     }
 
     @Test
-    public void updateBookingDetailTest() {
+    public void getBookingsByUserIdTest() {
         this.populate();
-        bookingDetail = bookingDetailService.createBookingDetail(bookingDetail, booking.getDay(), user.getUserId());
-        bookingDetail.setDescription("test");
-        BookingDetail b = bookingDetailService.updateBookingDetail(bookingDetail);
-        assertNotNull(b);
-        assertEquals("test", b.getDescription());
+        assertEquals(bookingService.getBookingsByUserId(userService.getUsers().get(0).getUserId())
+                .get(0).getDay(),booking.getDay());
+    }
+
+    @Test(expected = BookingNotFoundException.class)
+    public void getBookingByIdFailTest() {
+        this.populate();
+        bookingService.getBookingById(-1);
     }
 
     @Before
@@ -124,5 +122,4 @@ public class BookingDetailServiceTest {
         userService.deleteAll();
         programService.deleteAll();
     }
-
 }
