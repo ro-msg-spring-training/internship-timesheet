@@ -38,6 +38,16 @@ public class UserController {
         return ResponseEntity.accepted().body(userDtos);
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<User> users = userService.getUsers();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User u : users) {
+            userDtos.add(UserBuilder.getDtoFromUser(u));
+        }
+        return ResponseEntity.accepted().body(userDtos);
+    }
+
     @PostMapping(value = "/createUser", consumes = "multipart/form-data",
             produces = {"application/json", "application/xml"})
     public ResponseEntity<UserDto> createUser(@ModelAttribute UserDto userDto) {
